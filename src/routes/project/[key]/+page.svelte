@@ -1,6 +1,6 @@
-<template>
+
+<Layout>
     <div>
-      <h1>{title}</h1>
       <button class="back-button" on:click={() => goBack()}>Back</button>
       <div class="video-container">
         <!-- svelte-ignore a11y-missing-attribute -->
@@ -11,12 +11,11 @@
         ></iframe>
       </div>
     </div>
-  </template>
+</Layout>
   
   <script lang="ts">
     import { onMount } from 'svelte';
-  
-    let title = "Drone Video";
+    import Layout from './../../layout.svelte';
     let videoLink = "https://player.vimeo.com/video/YOUR_VIDEO_ID"; // Replace YOUR_VIDEO_ID with the actual Vimeo video ID
   
     onMount(() => {
