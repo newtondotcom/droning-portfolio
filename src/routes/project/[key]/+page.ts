@@ -2,10 +2,10 @@ import { error } from '@sveltejs/kit';
 import type { Project } from '../../../lib/types';
 
 export function load({ params }) {
-    if (params.key === 'hello-world') {
+    if (params.key === 'project-1') {
         return {
             title: 'Hello world!',
-            content: 'Welcome to our blog. Lorem ipsum dolor sit amet...'
+            link : 'https://player.vimeo.com/video/849909483',
         };
     }
 

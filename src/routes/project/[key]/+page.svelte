@@ -1,23 +1,10 @@
-
-<Layout>
-    <div>
-      <button class="back-button" on:click={() => goBack()}>Back</button>
-      <div class="video-container">
-        <!-- svelte-ignore a11y-missing-attribute -->
-        <iframe
-          src={videoLink}
-          frameborder="0"
-          allowfullscreen
-        ></iframe>
-      </div>
-    </div>
-</Layout>
-  
   <script lang="ts">
     import { onMount } from 'svelte';
     import Layout from './../../layout.svelte';
-    let videoLink = "https://player.vimeo.com/video/YOUR_VIDEO_ID"; // Replace YOUR_VIDEO_ID with the actual Vimeo video ID
-  
+    import { goto } from '$app/navigation';
+
+    let videoLink:string ; 
+
     onMount(() => {
       showTitleAndThenPlayVideo();
     });
@@ -29,9 +16,24 @@
     }
   
     function goBack() {
-      // Redirect back to the main page
+      goto('/');
     }
   </script>
+
+<Layout>
+  <div>
+    <button class="back-button" on:click={() => goBack()}>Back</button>
+    <div class="video-container">
+      <!-- svelte-ignore a11y-missing-attribute -->
+      <iframe
+        src={videoLink}
+        frameborder="0"
+        allowfullscreen
+      ></iframe>
+    </div>
+  </div>
+</Layout>
+
   
   <style>
     /* Add your CSS styling here for the video container and custom buttons */
