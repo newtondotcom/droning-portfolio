@@ -3,9 +3,9 @@ import type { Project } from '../../../lib/types';
 
 export function load({ params }) {
     if (params.key === 'project-1') {
+        //const post = posts.find((post) => post.slug === params.slug);
         return {
-            title: 'Hello world!',
-            link : 'https://player.vimeo.com/video/849909483',
+            videoLink : 'https://player.vimeo.com/video/849909483',
         };
     }
 
