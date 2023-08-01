@@ -5,10 +5,9 @@
     import { createEventDispatcher } from 'svelte';
     import Layout from './layout.svelte';
     import { goto } from '$app/navigation';
+    import {delay} from '../lib/constants';
 
     let displayGrid: boolean = false;
-
-    const delay = 500;
 
     let displayFooter = true;
 

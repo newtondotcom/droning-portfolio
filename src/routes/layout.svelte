@@ -36,6 +36,7 @@ Made from scratch by ‎ <a class="link" href="https://github.com/newtondotcom/d
 main {
     background-color: black;
     font-family: 'VT323', monospace;
+    cursor : grab;
 }
   
 .title {

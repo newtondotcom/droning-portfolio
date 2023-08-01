@@ -6,33 +6,41 @@
   import { onMount } from 'svelte';
   import Layout from './../../layout.svelte';
   import { goto } from '$app/navigation';
-
-  let videoLink;
+  import {delay} from '../../../lib/constants';
 
   let currentTime = 0;
   let duration = 0;
   let isPlaying = false;
   let isFullScreen = false;
+  let displayFooter = false;
+  let videoReady = false;
 
   export let data;
-
-  const options = {
-    id: 849909483,
-    width: 640,
-    loop: true,
-    autoplay: true,
-    controls: false,
-  };
-
-  let player; // Declare player variable
+  let player; 
 
   onMount(async () => {
-    videoLink = data.videoLink;
+
+    setTimeout(() => {
+        displayFooter = true;
+      }, delay);
+
+    const options = {
+      //id: data.videoLink,
+      id : 849909483,
+      width: 640,
+      loop: true,
+      autoplay: true,
+      controls: false
+    };
     showTitleAndThenPlayVideo();
 
     // Initialize the player inside the onMount hook
     player = new Vimeo.Player('video', options);
     duration = await getDuration();
+
+    player.ready().then(function() {
+      videoReady = true;
+    });
 
     player.on('play', function () {
       console.log('played the video!');
@@ -47,7 +55,16 @@
     player.on('timeupdate', function (data) {
       currentTime = data.seconds;
     });
+
+    player.ready().then(function() {
+      console.log('the player is ready');
+      videoReady = true;
+    });
     
+    
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+
   });
 
   function formatDuration(seconds) {
@@ -65,8 +82,8 @@
   }
 
   async function showTitleAndThenPlayVideo() {
-    // FADE IN
     await new Promise((resolve) => setTimeout(resolve, 500));
+    displayFooter = true;
   }
 
   function togglePlayPause() {
@@ -91,32 +108,34 @@
   function goBack() {
     goto('/');
   }
+
+  function handleFullscreenChange() {
+    isFullScreen = document.fullscreenElement !== null;
+    console.log(isFullScreen);
+  }
 </script>
 
-<Layout>
-    <button class="back-button" on:click={() => goBack()}>Back</button>
-    <div class="video-container">
-      <div id="video"></div>
-      <div class="underlay">
-        <button id="btton" on:click={() => toggleFullScreen()}></button>
-        <button id="btton" on:click={() => togglePlayPause()}>{isPlaying ? 'pause' : 'play'}</button>
-        <div id="time">{formatDuration(currentTime)} {formatDuration(duration)}</div>
-        <div class="progress-bar">
-          <div class="progress" style={`width: ${(currentTime / duration) * 100}%`}></div>
-        </div>
-      </div>
-      {#if isFullScreen}
+<Layout displayFooter={displayFooter}>
+  <button class="back-button" on:click={() => goBack()}>Back</button>
+  <div class="video-container">
+    <div on:click={() => togglePlayPause()} id="video"></div>
       <div class="underlay fullscreen">
-        <button id="btton" on:click={() => toggleFullScreen()}></button>
-        <button id="btton" on:click={() => togglePlayPause()}>{isPlaying ? 'pause' : 'play'}</button>
-        <div id="time">{formatDuration(currentTime)} {formatDuration(duration)}</div>
-        <div class="progress-bar">
-          <div class="progress" style={`width: ${(currentTime / duration) * 100}%`}></div>
+        <div class="controls-container">
+          <button id="play-pause-btn" on:click={() => togglePlayPause()}>
+            {isPlaying ? 'pause' : 'play'}
+          </button>
+          <div id="time" class="time-container">
+            {formatDuration(currentTime)} {formatDuration(duration)}
+          </div>
+          <div class="progress-bar">
+            <div class="progress" style={`width: ${(currentTime / duration) * 100}%`}></div>
+          </div>
+          <button id="fullscreen-btn" on:click={() => toggleFullScreen()}>
+            {isFullScreen ? 'Exit Fullscreen' : 'Fullscreen'}
+          </button>
         </div>
       </div>
-      {/if}
-
-    </div>
+  </div>
 </Layout>
 
 <style>
@@ -125,10 +144,7 @@
     align-items: center;
     display: flex;
     flex-direction: column;
-  }
-
-  .video-container:hover {
-    cursor: grab;
+    justify-content: center;
   }
 
   #btton {
@@ -144,14 +160,15 @@
     max-height: 100%;
     background-color: black;
     align-items: center;
-    transform: translateX(+20%);
+    margin-left: 55vw;
   }
 
   .progress-bar {
-    width: 80%;
+    width: 400px;
     height: 2px;
     background-color: white;
     margin-top: 20px;
+    transform: translateY(-10px);
   }
 
   .progress {
@@ -179,4 +196,24 @@
         height: 100vh;
         z-index: 9999;
   }
+
+  .controls-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 10px;
+    }
+
+    .controls-container.fullscreen {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 10px;
+  }
+
+    .time-container {
+        margin: 0 20px;
+    }
 </style>
