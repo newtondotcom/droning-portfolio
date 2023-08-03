@@ -1,12 +1,8 @@
-<svelte:head>
-  <script src="https://player.vimeo.com/api/player.js"></script>
-</svelte:head>
-
 <script lang="js">
   import { onMount } from 'svelte';
   import Layout from './../../layout.svelte';
   import { goto } from '$app/navigation';
-  import {delay} from '../../../lib/constants';
+  import {delay, delayAnimation} from '../../../lib/constants';
 
   let currentTime = 0;
   let duration = 0;
@@ -16,6 +12,7 @@
   let videoReady = false;
 
   export let data;
+
   let player; 
 
   onMount(async () => {
@@ -25,8 +22,9 @@
       }, delay);
 
     const options = {
-      //id: data.videoLink,
-      id : 849909483,
+      
+      id: data.videoLink,
+      //id : 849909483,
       width: 640,
       loop: true,
       autoplay: true,
@@ -43,12 +41,10 @@
     });
 
     player.on('play', function () {
-      console.log('played the video!');
       isPlaying = true;
     });
 
     player.on('pause', function () {
-      console.log('paused the video!');
       isPlaying = false;
     });
 
@@ -57,7 +53,6 @@
     });
 
     player.ready().then(function() {
-      console.log('the player is ready');
       videoReady = true;
     });
     
@@ -111,17 +106,18 @@
 
   function handleFullscreenChange() {
     isFullScreen = document.fullscreenElement !== null;
-    console.log(isFullScreen);
   }
 </script>
 
-<Layout displayFooter={displayFooter}>
+<Layout displayFooter={videoReady}>
   <button class="back-button" on:click={() => goBack()}>Back</button>
   <div class="video-container">
+    <!-- svelte-ignore a11y-click-events-have-key-events -->
+    <!-- svelte-ignore a11y-no-static-element-interactions -->
     <div on:click={() => togglePlayPause()} id="video"></div>
       <div class="underlay fullscreen">
-        <div class="controls-container">
-          <button id="play-pause-btn" on:click={() => togglePlayPause()}>
+        <div class="controls-container" style ="opacity: {videoReady ? 1 : 0}; transition: opacity 0.{delayAnimation}s ease;">
+          <button id="btton" on:click={() => togglePlayPause()}>
             {isPlaying ? 'pause' : 'play'}
           </button>
           <div id="time" class="time-container">
@@ -130,7 +126,7 @@
           <div class="progress-bar">
             <div class="progress" style={`width: ${(currentTime / duration) * 100}%`}></div>
           </div>
-          <button id="fullscreen-btn" on:click={() => toggleFullScreen()}>
+          <button id="btton" on:click={() => toggleFullScreen()}>
             {isFullScreen ? 'Exit Fullscreen' : 'Fullscreen'}
           </button>
         </div>
@@ -169,6 +165,7 @@
     background-color: white;
     margin-top: 20px;
     transform: translateY(-10px);
+    margin-right: 10px;
   }
 
   .progress {
@@ -204,16 +201,34 @@
         margin-top: 10px;
     }
 
-    .controls-container.fullscreen {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    padding: 10px;
-  }
-
     .time-container {
         margin: 0 20px;
     }
+
+    @media (max-width: 768px) {
+        .video-container {
+            margin-top: 0;
+            margin-bottom: 200px;
+        }
+
+        .progress-bar {
+            display : none;
+        }
+
+        .controls-container {
+            margin-top: 0;
+
+        }
+
+        .time-container {
+            margin: 10px 0;
+        }
+    }
+
+    @media (max-height: 500px) {
+      .progress-bar {
+            display : none;
+        }
+    }
+
 </style>

@@ -6,7 +6,7 @@ export async function getProjectsFromDatabase(): Promise<Project[]> {
     {
       name: "Project 1",
       thumbnail: "https://www.rocketmortgage.com/resources-cmsassets/RocketMortgage.com/Article_Images/Large_Images/TypesOfHomes/types-of-homes-hero.jpg",
-      videoLink: "https://player.vimeo.com/video/849909483",
+      videoLink: "849909483",
       description: "Description of Project 1",
       key: "project-1",
     },

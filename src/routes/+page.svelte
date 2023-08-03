@@ -5,7 +5,7 @@
     import { createEventDispatcher } from 'svelte';
     import Layout from './layout.svelte';
     import { goto } from '$app/navigation';
-    import {delay} from '../lib/constants';
+    import {delay, delayAnimation} from '../lib/constants';
 
     let displayGrid: boolean = false;
 
@@ -47,7 +47,7 @@
           <!-- svelte-ignore a11y-click-events-have-key-events -->
           <!-- svelte-ignore a11y-no-static-element-interactions -->
           <div
-            class="project-case" style="opacity: {displayFooter ? 1 : 0}; transition: opacity 0.5s ease;"
+            class="project-case" style="opacity: {displayFooter ? 1 : 0}; transition: opacity 0.{delayAnimation}s ease;"
             on:mouseenter={() => handleMouseEnter(project)}
             on:mouseleave={() => handleMouseLeave()}
             on:click={() => handleClick(project)}

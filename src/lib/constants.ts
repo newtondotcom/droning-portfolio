@@ -1,2 +1,4 @@
-const delay = 300;
-export { delay };
+const delay = 200;
+const delayAnimation = 500;
+
+export { delay, delayAnimation };
