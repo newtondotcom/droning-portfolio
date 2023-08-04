@@ -8,28 +8,28 @@ export async function getProjectsFromDatabase(): Promise<Project[]> {
       thumbnail: "https://www.rocketmortgage.com/resources-cmsassets/RocketMortgage.com/Article_Images/Large_Images/TypesOfHomes/types-of-homes-hero.jpg",
       videoLink: "849909483",
       description: "Description of Project 1",
-      key: "project-1",
+      key: "1",
     },
     {
       name: "Project 2",
       thumbnail: "https://www.rocketmortgage.com/resources-cmsassets/RocketMortgage.com/Article_Images/Large_Images/TypesOfHomes/types-of-homes-hero.jpg",
       videoLink: "https://player.vimeo.com/video/PROJECT_2_VIDEO_ID",
       description: "Description of Project 2",
-      key: "project-2",
+      key: "2",
     },
     {
       name: "Project 2",
       thumbnail: "https://www.rocketmortgage.com/resources-cmsassets/RocketMortgage.com/Article_Images/Large_Images/TypesOfHomes/types-of-homes-hero.jpg",
       videoLink: "https://player.vimeo.com/video/PROJECT_2_VIDEO_ID",
       description: "Description of Project 2",
-      key: "project-2",
+      key: "2",
     },    
     {
       name: "Project 2",
       thumbnail: "https://www.rocketmortgage.com/resources-cmsassets/RocketMortgage.com/Article_Images/Large_Images/TypesOfHomes/types-of-homes-hero.jpg",
       videoLink: "https://player.vimeo.com/video/PROJECT_2_VIDEO_ID",
       description: "Description of Project 2",
-      key: "project-2",
+      key: "2",
     },
   ];
 }

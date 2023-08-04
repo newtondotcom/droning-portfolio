@@ -14,8 +14,15 @@
   export let data;
 
   let player; 
+  let index;
+  let next;
+  let previous;
 
   onMount(async () => {
+    console.log(data.key);
+    index = parseInt(data.key, 10);
+    next = index + 1;
+    previous = index - 1;
 
     setTimeout(() => {
         displayFooter = true;
@@ -110,12 +117,10 @@
 </script>
 
 <Layout displayFooter={videoReady}>
-  <button class="back-button" on:click={() => goBack()}>Back</button>
   <div class="video-container">
     <!-- svelte-ignore a11y-click-events-have-key-events -->
     <!-- svelte-ignore a11y-no-static-element-interactions -->
     <div on:click={() => togglePlayPause()} id="video"></div>
-      <div class="underlay fullscreen">
         <div class="controls-container" style ="opacity: {videoReady ? 1 : 0}; transition: opacity 0.{delayAnimation}s ease;">
           <button id="btton" on:click={() => togglePlayPause()}>
             {isPlaying ? 'pause' : 'play'}
@@ -130,7 +135,13 @@
             {isFullScreen ? 'Exit Fullscreen' : 'Fullscreen'}
           </button>
         </div>
-      </div>
+  </div>
+  <a id="previous" class="nav" href="/project/{next}">previous</a>
+  <a id="next" class="nav" href="/project/{previous}">next</a>
+
+  <div class="nav-mobile">
+  <a id="previousm" class="nav-mobile" href="/project/{next}">previous</a>
+  <a id="nextm" class="nav-mobile" href="/project/{previous}">next</a>
   </div>
 </Layout>
 
@@ -142,6 +153,12 @@
     flex-direction: column;
     justify-content: center;
   }
+
+  a {
+    color: white;
+    text-decoration: none;
+  }
+
 
   #btton {
     background-color: black;
@@ -174,24 +191,8 @@
     transform: translateY(-50%);
   }
 
-  .underlay {
-    width: 100%;
-    height: 100%;
-    margin-bottom: 100px;
-    color: white;
-    display: inline-flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .fullscreen {
-    position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        z-index: 9999;
+  #time {
+    color : white;
   }
 
   .controls-container {
@@ -205,9 +206,39 @@
         margin: 0 20px;
     }
 
+    .nav {
+        font-size: 2rem;
+        color: white;
+        z-index: 2;
+        background-color: black;
+        padding: 10px;
+        border-radius: 20px;
+        margin: 10px;
+        border : 2px double grey;
+    }
+    
+
+    #previous {
+        position: fixed;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+    }
+
+    #next {
+        position: fixed;
+        top: 50%;
+        right: 0;
+        transform: translateY(-50%);
+    }
+
+    .nav-mobile {
+      display: none;
+    }
+
     @media (max-width: 768px) {
         .video-container {
-            margin-top: 0;
+            margin-top: 200px;
             margin-bottom: 200px;
         }
 
@@ -222,6 +253,31 @@
 
         .time-container {
             margin: 10px 0;
+        }
+
+        .nav {
+          display : none;
+        }
+
+        .nav-mobile {
+          display: inline-flex;
+          font-size: 2rem;
+          color: white;
+          z-index: 2;
+          background-color: black;
+          padding: 10px;
+          border-radius: 20px;
+          margin: 10px;
+        }
+
+        #previousm {
+          border : 2px double grey;
+          color : white;
+        }
+
+        #nextm {
+          border : 2px double grey;
+          color : white;
         }
     }
 
