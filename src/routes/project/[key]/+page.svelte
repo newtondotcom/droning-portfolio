@@ -1,25 +1,49 @@
-<script lang="js">
+<script lang="ts">
   import { onMount } from 'svelte';
   import Layout from './../../layout.svelte';
   import { goto } from '$app/navigation';
   import {delay, delayAnimation} from '../../../lib/constants';
+
+  import { YouTube } from 'svelte-yt';
+
+  // Can be used to control full YouTube player
+  // See https://developers.google.com/youtube/iframe_api_reference#Functions
+  let player:any;
+
+  // See https://developers.google.com/youtube/player_parameters#Parameters
+  const options = {
+    playerVars: {
+      modestbranding: 1,
+      loop : 1,
+      enablejsapi: 1,
+      fs : 1,
+      rel : 0,
+      iv_load_policy : 3,
+      showinfo : 0,
+      playsinline : 1,
+      autohide : 1,
+      autoplay: 1,
+    },
+    height: '360',
+    width: '640',
+  };
 
   let currentTime = 0;
   let duration = 0;
   let isPlaying = false;
   let isFullScreen = false;
   let displayFooter = false;
-  let videoReady = false;
+  let videoReady = true;
 
   export let data;
 
-  let player; 
+  let videoId = data.videoLink;
+
   let index;
   let next;
   let previous;
 
   onMount(async () => {
-    console.log(data.key);
     index = parseInt(data.key, 10);
     next = index + 1;
     previous = index - 1;
@@ -28,27 +52,11 @@
         displayFooter = true;
       }, delay);
 
-    const options = {
-      
-      id: data.videoLink,
-      //id : 849909483,
-      width: 640,
-      loop: true,
-      autoplay: true,
-      controls: false
-    };
-    showTitleAndThenPlayVideo();
-
-    // Initialize the player inside the onMount hook
-    player = new Vimeo.Player('video', options);
     duration = await getDuration();
 
     player.ready().then(function() {
       videoReady = true;
-    });
-
-    player.on('play', function () {
-      isPlaying = true;
+      player.setVolume(0);
     });
 
     player.on('pause', function () {
@@ -62,9 +70,7 @@
     player.ready().then(function() {
       videoReady = true;
     });
-    
-    
-
+  
     document.addEventListener('fullscreenchange', handleFullscreenChange);
 
   });
@@ -83,17 +89,14 @@
     return await player.getDuration();
   }
 
-  async function showTitleAndThenPlayVideo() {
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    displayFooter = true;
-  }
-
   function togglePlayPause() {
+    console.log('togglePlayPause');
     if (isPlaying) {
-      player.pause();
+      player.pauseVideo();
     } else {
-      player.play();
+      player.playVideo();
     }
+    isPlaying = !isPlaying;
   }
 
   async function toggleFullScreen() {
@@ -118,9 +121,9 @@
 
 <Layout displayFooter={videoReady}>
   <div class="video-container">
+    <YouTube bind:player on:play={()=>togglePlayPause()} {videoId} {options} />
     <!-- svelte-ignore a11y-click-events-have-key-events -->
     <!-- svelte-ignore a11y-no-static-element-interactions -->
-    <div on:click={() => togglePlayPause()} id="video"></div>
         <div class="controls-container" style ="opacity: {videoReady ? 1 : 0}; transition: opacity 0.{delayAnimation}s ease;">
           <button id="btton" on:click={() => togglePlayPause()}>
             {isPlaying ? 'pause' : 'play'}
@@ -136,12 +139,12 @@
           </button>
         </div>
   </div>
-  <a id="previous" class="nav" href="/project/{next}">previous</a>
-  <a id="next" class="nav" href="/project/{previous}">next</a>
+  <a id="previous" class="nav" href="/project/{previous}">previous</a>
+  <a id="next" class="nav" href="/project/{next}">next</a>
 
   <div class="nav-mobile">
-  <a id="previousm" class="nav-mobile" href="/project/{next}">previous</a>
-  <a id="nextm" class="nav-mobile" href="/project/{previous}">next</a>
+  <a id="previousm" class="nav-mobile" href="/project/{previous}">previous</a>
+  <a id="nextm" class="nav-mobile" href="/project/{next}">next</a>
   </div>
 </Layout>
 

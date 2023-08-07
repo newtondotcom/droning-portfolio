@@ -5,7 +5,7 @@ export function load({ params }) {
     if (params.key === '1') {
         //const post = posts.find((post) => post.slug === params.slug);
         return {
-            videoLink : 'https://player.vimeo.com/video/849909483',
+            videoLink : '5T7OMVLQLwE',
             key : '1',
         };
     }

@@ -6,14 +6,14 @@ export async function getProjectsFromDatabase(): Promise<Project[]> {
     {
       name: "Project 1",
       thumbnail: "https://www.rocketmortgage.com/resources-cmsassets/RocketMortgage.com/Article_Images/Large_Images/TypesOfHomes/types-of-homes-hero.jpg",
-      videoLink: "849909483",
+      videoLink: "fZw_SWMVpfM",
       description: "Description of Project 1",
       key: "1",
     },
     {
       name: "Project 2",
       thumbnail: "https://www.rocketmortgage.com/resources-cmsassets/RocketMortgage.com/Article_Images/Large_Images/TypesOfHomes/types-of-homes-hero.jpg",
-      videoLink: "https://player.vimeo.com/video/PROJECT_2_VIDEO_ID",
+      videoLink: "5T7OMVLQLwE",
       description: "Description of Project 2",
       key: "2",
     },
