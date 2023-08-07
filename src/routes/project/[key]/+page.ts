@@ -7,6 +7,7 @@ export function load({ params }) {
         return {
             videoLink : '5T7OMVLQLwE',
             key : '1',
+            duration :'80'
         };
     }
 

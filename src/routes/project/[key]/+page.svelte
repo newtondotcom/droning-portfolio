@@ -10,6 +10,15 @@
   // See https://developers.google.com/youtube/iframe_api_reference#Functions
   let player:any;
 
+  let width;
+
+  if (window.innerWidth > 768) {
+    width = window.innerWidth;
+  } else {
+    width = 360;
+  }
+
+
   // See https://developers.google.com/youtube/player_parameters#Parameters
   const options = {
     playerVars: {
@@ -24,12 +33,11 @@
       autohide : 1,
       autoplay: 1,
     },
-    height: '360',
-    width: '640',
+    width: width,
   };
 
-  let currentTime = 0;
-  let duration = 0;
+  let currentTime: any;
+  let duration:number = 0;
   let isPlaying = false;
   let isFullScreen = false;
   let displayFooter = false;
@@ -48,32 +56,43 @@
     next = index + 1;
     previous = index - 1;
 
+    duration = data.duration;
+
     setTimeout(() => {
         displayFooter = true;
       }, delay);
 
-    duration = await getDuration();
-
-    player.ready().then(function() {
-      videoReady = true;
-      player.setVolume(0);
-    });
+      const updateInterval = setInterval(async () => {
+        if (player) {
+          if (isPlaying) {
+            currentTime = await player.getCurrentTime();
+          } else {
+            currentTime = 0;
+          }
+        }
+      }, 1000);
 
     player.on('pause', function () {
       isPlaying = false;
-    });
-
-    player.on('timeupdate', function (data) {
-      currentTime = data.seconds;
-    });
-
-    player.ready().then(function() {
-      videoReady = true;
     });
   
     document.addEventListener('fullscreenchange', handleFullscreenChange);
 
   });
+
+  function onPause(event:any) {
+    isPlaying = false;
+  }
+
+  function onPlay(event:any) {
+    isPlaying = true;
+  }
+
+
+  async function onReady(event:any) {
+    videoReady = true;
+    player.setVolume(0);
+  }
 
   function formatDuration(seconds) {
     const minutes = Math.floor(seconds / 60);
@@ -81,22 +100,8 @@
     return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
   }
 
-  async function getCurrentTime() {
-    currentTime = await player.getCurrentTime();
-  }
-
   async function getDuration() {
     return await player.getDuration();
-  }
-
-  function togglePlayPause() {
-    console.log('togglePlayPause');
-    if (isPlaying) {
-      player.pauseVideo();
-    } else {
-      player.playVideo();
-    }
-    isPlaying = !isPlaying;
   }
 
   async function toggleFullScreen() {
@@ -107,6 +112,14 @@
     } else {
       player.requestFullscreen();
       isFullScreen = true;
+    }
+  }
+
+  async function togglePlayPause() {
+    if (isPlaying) {
+      await player.pauseVideo();
+    } else {
+      await player.playVideo();
     }
   }
 
@@ -121,7 +134,15 @@
 
 <Layout displayFooter={videoReady}>
   <div class="video-container">
-    <YouTube bind:player on:play={()=>togglePlayPause()} {videoId} {options} />
+    <YouTube 
+    bind:player 
+    on:play={onPlay}
+    on:ready={onReady}
+    on:pause={onPause}
+    {videoId} 
+    {options} 
+    />
+
     <!-- svelte-ignore a11y-click-events-have-key-events -->
     <!-- svelte-ignore a11y-no-static-element-interactions -->
         <div class="controls-container" style ="opacity: {videoReady ? 1 : 0}; transition: opacity 0.{delayAnimation}s ease;">
@@ -134,9 +155,11 @@
           <div class="progress-bar">
             <div class="progress" style={`width: ${(currentTime / duration) * 100}%`}></div>
           </div>
+          <!--
           <button id="btton" on:click={() => toggleFullScreen()}>
             {isFullScreen ? 'Exit Fullscreen' : 'Fullscreen'}
           </button>
+          -->
         </div>
   </div>
   <a id="previous" class="nav" href="/project/{previous}">previous</a>
@@ -167,16 +190,6 @@
     background-color: black;
     color : white;
     font-family: 'VT323', monospace;
-  }
-
-  #video {
-    width: 100vw;
-    height: auto;
-    max-width: 100%;
-    max-height: 100%;
-    background-color: black;
-    align-items: center;
-    margin-left: 55vw;
   }
 
   .progress-bar {
@@ -242,7 +255,8 @@
     @media (max-width: 768px) {
         .video-container {
             margin-top: 200px;
-            margin-bottom: 200px;
+            margin-bottom: 20px;
+            height: 40vh;
         }
 
         .progress-bar {
@@ -255,7 +269,7 @@
         }
 
         .time-container {
-            margin: 10px 0;
+          font-size: 20px;
         }
 
         .nav {
@@ -263,7 +277,7 @@
         }
 
         .nav-mobile {
-          display: inline-flex;
+          display: block;
           font-size: 2rem;
           color: white;
           z-index: 2;
@@ -271,16 +285,26 @@
           padding: 10px;
           border-radius: 20px;
           margin: 10px;
+          justify-content: center;
+          align-items: center;
+          margin-bottom: 40px;
         }
 
         #previousm {
           border : 2px double grey;
           color : white;
+          float: left;
         }
 
         #nextm {
           border : 2px double grey;
           color : white;
+          float: right;
+        }
+
+        #btton{
+          margin-right: 10px;
+          font-size: 20px;
         }
     }
 

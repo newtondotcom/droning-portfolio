@@ -120,6 +120,8 @@
     grid-gap: 1rem;
     align-items: center;
     justify-content: center;
+    margin-top: 80px;
+    margin-bottom: 50px;
   }
 
   .project-case img {

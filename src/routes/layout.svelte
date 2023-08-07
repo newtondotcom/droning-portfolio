@@ -48,6 +48,7 @@ main {
     position: absolute;
     top: 0;
     left: 10px;
+    z-index: 89;
 }
 
 .contact {
