@@ -3,45 +3,25 @@
   import Layout from './../../layout.svelte';
   import { goto } from '$app/navigation';
   import {delay, delayAnimation} from '../../../lib/constants';
-
   import { YouTube } from 'svelte-yt';
 
   // Can be used to control full YouTube player
   // See https://developers.google.com/youtube/iframe_api_reference#Functions
-  let player:any;
-
-  let width;
-
-  if (window.innerWidth > 768) {
-    width = window.innerWidth;
-  } else {
-    width = 360;
-  }
-
-
   // See https://developers.google.com/youtube/player_parameters#Parameters
-  const options = {
-    playerVars: {
-      modestbranding: 1,
-      loop : 1,
-      enablejsapi: 1,
-      fs : 1,
-      rel : 0,
-      iv_load_policy : 3,
-      showinfo : 0,
-      playsinline : 1,
-      autohide : 1,
-      autoplay: 1,
-    },
-    width: width,
-  };
 
-  let currentTime: any;
+  let player:any;
+  let options:any;
+  let width;
+  let height;
+
+
+  let currentTime: number = 0;
   let duration:number = 0;
   let isPlaying = false;
   let isFullScreen = false;
   let displayFooter = false;
   let videoReady = true;
+  let description:string;
 
   export let data;
 
@@ -49,14 +29,45 @@
 
   let index;
   let next;
-  let previous;
 
   onMount(async () => {
+
+    if (window.screen.width > 768) {
+      width = window.screen.width;
+      console.log(width);
+    } else {
+      width = 360;
+    }
+    width = 640;
+    height = width * 0.5625;
+
+
+    options = {
+      playerVars: {
+        enablejsapi: 1,
+       
+        controls : 0,
+        showinfo : 0,
+        modestbranding: 0,
+
+        loop : 1,
+        autohide : 1,
+        rel : 0,
+        playsinline : 1, // for ios
+        fs : 1,
+        iv_load_policy : 3,
+        autoplay: 1,
+        //color : 'red',
+      },
+      width: width,
+      height: height,
+    };
+
     index = parseInt(data.key, 10);
     next = index + 1;
-    previous = index - 1;
 
     duration = data.duration;
+    description = data.description;
 
     setTimeout(() => {
         displayFooter = true;
@@ -69,12 +80,10 @@
           } else {
             currentTime = 0;
           }
+        } else {
+          currentTime = 0;
         }
       }, 1000);
-
-    player.on('pause', function () {
-      isPlaying = false;
-    });
   
     document.addEventListener('fullscreenchange', handleFullscreenChange);
 
@@ -105,14 +114,7 @@
   }
 
   async function toggleFullScreen() {
-    const isFS = await player.getFullscreen();
-    if (isFS) {
-      player.exitFullscreen();
-      isFullScreen = false;
-    } else {
-      player.requestFullscreen();
-      isFullScreen = true;
-    }
+    console.log(isFullScreen);
   }
 
   async function togglePlayPause() {
@@ -132,7 +134,7 @@
   }
 </script>
 
-<Layout displayFooter={videoReady}>
+<Layout displayFooter={false}>
   <div class="video-container">
     <YouTube 
     bind:player 
@@ -141,7 +143,9 @@
     on:pause={onPause}
     {videoId} 
     {options} 
+    style="display: {videoReady ? 'none' : 'block'}; transition: opacity 0.{delayAnimation}s ease;"
     />
+    <div id="loading" style="display: {videoReady ? 'none' : 'block'}; width:{width}px; height:{height}px;"></div>
 
     <!-- svelte-ignore a11y-click-events-have-key-events -->
     <!-- svelte-ignore a11y-no-static-element-interactions -->
@@ -156,24 +160,27 @@
             <div class="progress" style={`width: ${(currentTime / duration) * 100}%`}></div>
           </div>
           <!--
-          <button id="btton" on:click={() => toggleFullScreen()}>
+          <button id="btton" on:click={()=>toggleFullScreen()}>
             {isFullScreen ? 'Exit Fullscreen' : 'Fullscreen'}
           </button>
           -->
         </div>
+        <div id="desc">
+          <p>{description}</p>
+        </div>
   </div>
-  <a id="previous" class="nav" href="/project/{previous}">previous</a>
+  <a id="previous" class="nav" href="/">go back</a>
   <a id="next" class="nav" href="/project/{next}">next</a>
 
-  <div class="nav-mobile">
-  <a id="previousm" class="nav-mobile" href="/project/{previous}">previous</a>
+  <div class="nav-mobileC">
+  <a id="previousm" class="nav-mobile" href="/">go back</a>
   <a id="nextm" class="nav-mobile" href="/project/{next}">next</a>
   </div>
 </Layout>
 
 <style>
   .video-container {
-    margin-top: 100px;
+    margin-top: 150px;
     align-items: center;
     display: flex;
     flex-direction: column;
@@ -236,27 +243,38 @@
 
     #previous {
         position: fixed;
-        top: 50%;
+        top: 95%;
         left: 0;
         transform: translateY(-50%);
     }
 
     #next {
         position: fixed;
-        top: 50%;
+        top: 95%;
         right: 0;
         transform: translateY(-50%);
     }
 
-    .nav-mobile {
+    .nav-mobileC {
       display: none;
+    }
+
+    #desc {
+      margin-top: 50px;
+      color : white;
+      width: 80vw;
+      font-family: Inconsolata, monospace;
     }
 
     @media (max-width: 768px) {
         .video-container {
-            margin-top: 200px;
-            margin-bottom: 20px;
-            height: 40vh;
+            margin-top: 450px;
+            margin-bottom: 50px;
+            height: 40vh; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
 
         .progress-bar {
@@ -264,7 +282,7 @@
         }
 
         .controls-container {
-            margin-top: 0;
+            margin-top: 10px;
 
         }
 
@@ -276,29 +294,33 @@
           display : none;
         }
 
-        .nav-mobile {
+        .nav-mobileC {
           display: block;
           font-size: 2rem;
           color: white;
           z-index: 2;
+          justify-content: center;
+          align-items: center;
+          position: fixed;
+          bottom: 0;
+        }
+
+        .nav-mobile {
           background-color: black;
           padding: 10px;
           border-radius: 20px;
           margin: 10px;
-          justify-content: center;
-          align-items: center;
-          margin-bottom: 40px;
+          position: relative;
+          text-decoration: none;
+          border : 2px double grey;
+          color : white;
         }
 
         #previousm {
-          border : 2px double grey;
-          color : white;
           float: left;
         }
 
         #nextm {
-          border : 2px double grey;
-          color : white;
           float: right;
         }
 
@@ -306,6 +328,13 @@
           margin-right: 10px;
           font-size: 20px;
         }
+
+        #desc {
+          margin-top: 20px;
+          width: 80vw;
+          font-size: 20px;
+        }
+        
     }
 
     @media (max-height: 500px) {
