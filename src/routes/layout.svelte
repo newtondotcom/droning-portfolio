@@ -68,13 +68,15 @@ main {
 
 .svg {
     fill : white;
-    width: 5vw;
+    width: 2vw;
     height: auto;
     margin : 10px;
     margin-bottom: 30px;
 }
 
 .footer {
+    position : absolute;
+    top: 85%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -127,17 +129,19 @@ main {
     }
 
     .svg {
-        width: 13vw;
+        width: 10vw;
         margin : 10px;
     }
 
-    .footer {
+    .footer {    
+        position : absolute;
+        top: 120%;
         margin-top: 10px;
         align-self: center;
     }
 
     .title {
-        font-size: 5rem;
+        font-size: 4rem;
         flex-wrap: nowrap;
         color: white;
         position: absolute;

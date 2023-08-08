@@ -82,7 +82,7 @@
 
 .project-case {
   cursor: pointer;
-  transition: transform 0.5s ease; /* Smooth transition for the transform property */
+  transition: transform 0.5s ease;
   position: relative;
 }
 
@@ -102,6 +102,7 @@
 
 .overwrite {
   color : white;
+  font-family: Inconsolata, monospace;
   font-size: 40px;
   position: absolute;
   top: 50%;
