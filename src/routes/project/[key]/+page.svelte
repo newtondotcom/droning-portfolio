@@ -11,8 +11,8 @@
 
   let player:any;
   let options:any;
-  let width;
-  let height;
+  let width:number;
+  let height:number;
 
 
   let currentTime: number = 0;
@@ -28,7 +28,7 @@
   let videoId = data.videoLink;
 
   let index;
-  let next;
+  let next:number;
 
   onMount(async () => {
 
@@ -66,7 +66,7 @@
     index = parseInt(data.key, 10);
     next = index + 1;
 
-    duration = data.duration;
+    duration = parseInt(data.duration, 10);
     description = data.description;
 
     setTimeout(() => {
@@ -103,7 +103,7 @@
     player.setVolume(0);
   }
 
-  function formatDuration(seconds) {
+  function formatDuration(seconds:number) {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = Math.floor(seconds % 60);
     return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
