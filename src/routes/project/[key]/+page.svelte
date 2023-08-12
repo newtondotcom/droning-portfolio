@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
   import Layout from './../../layout.svelte';
   import { goto } from '$app/navigation';
   import {delay, delayAnimation} from '../../../lib/constants';
@@ -25,7 +25,7 @@
 
   export let data;
 
-  let videoId = data.videoLink;
+  let videoId:any;
 
   let index;
   let next:number;
@@ -63,11 +63,13 @@
       height: height,
     };
 
-    index = parseInt(data.key, 10);
+    videoId = data.requestedProject.videoLink;
+
+    index = parseInt(data.requestedProject.key, 10);
     next = index + 1;
 
-    duration = parseInt(data.duration, 10);
-    description = data.description;
+    duration = parseInt(data.requestedProject.duration, 10);
+    description = data.requestedProject.description;
 
     setTimeout(() => {
         displayFooter = true;
@@ -77,7 +79,7 @@
         if (player) {
           if (isPlaying) {
             currentTime = await player.getCurrentTime();
-          } else {
+          } else if (currentTime < 1) {
             currentTime = 0;
           }
         } else {
@@ -129,12 +131,24 @@
     goto('/');
   }
 
+  function goNext() {
+    goto(`/project/${next}`);
+  }
+
   function handleFullscreenChange() {
     isFullScreen = document.fullscreenElement !== null;
   }
+
+  onDestroy(() => {
+    // Clean up any remaining player instances when the component is destroyed
+    if (player) {
+      player.destroy();
+    }
+  });
+
 </script>
 
-<Layout displayFooter={false}>
+<Layout displayFooter={displayFooter}>
   <div class="video-container">
     <YouTube 
     bind:player 
@@ -143,7 +157,6 @@
     on:pause={onPause}
     {videoId} 
     {options} 
-    style="display: {videoReady ? 'none' : 'block'}; transition: opacity 0.{delayAnimation}s ease;"
     />
     <div id="loading" style="display: {videoReady ? 'none' : 'block'}; width:{width}px; height:{height}px;"></div>
 
@@ -165,16 +178,28 @@
           </button>
           -->
         </div>
-        <div id="desc">
+        <div id="desc" style="opacity: {displayFooter ? 1 : 0};">
           <p>{description}</p>
         </div>
   </div>
-  <a id="previous" class="nav" href="/">go back</a>
-  <a id="next" class="nav" href="/project/{next}">next</a>
+  <!-- svelte-ignore a11y-click-events-have-key-events -->
+  <!-- svelte-ignore a11y-no-static-element-interactions -->
+  <!-- svelte-ignore a11y-missing-attribute -->
+  <a id="previous" class="nav" on:click={goBack}>go back</a>
+  <!-- svelte-ignore a11y-click-events-have-key-events -->
+  <!-- svelte-ignore a11y-no-static-element-interactions -->
+  <!-- svelte-ignore a11y-missing-attribute -->
+  <a id="next" class="nav" on:click={goNext}>next</a>
 
   <div class="nav-mobileC">
-  <a id="previousm" class="nav-mobile" href="/">go back</a>
-  <a id="nextm" class="nav-mobile" href="/project/{next}">next</a>
+    <!-- svelte-ignore a11y-click-events-have-key-events -->
+    <!-- svelte-ignore a11y-no-static-element-interactions -->
+    <!-- svelte-ignore a11y-missing-attribute -->
+  <a id="previousm" class="nav-mobile" on:click={goBack}>go back</a>
+  <!-- svelte-ignore a11y-click-events-have-key-events -->
+  <!-- svelte-ignore a11y-no-static-element-interactions -->
+  <!-- svelte-ignore a11y-missing-attribute -->
+  <a id="nextm" class="nav-mobile"on:click={goNext}>next</a>
   </div>
 </Layout>
 

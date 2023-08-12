@@ -1,6 +1,7 @@
 <script lang="ts">
     import Layout from "../layout.svelte";
     import {delay, discordWebhook} from "../../lib/constants";
+    import {sendToDiscordWebhook} from "./discord";
   
     setTimeout(() => {
       showFooter = true;
@@ -14,18 +15,14 @@
     let message:string = "";
     let messageSubmitted:string = "Thanks, I will be in touch with you shortly.";
 
-    async function handleSubmit(event) {
+    async function handleSubmit(event: { preventDefault: () => void; }) {
       event.preventDefault();
-      await sendToDiscordWebhook();
+      await sendToDiscordWebhook(message,email,name);
       clearForm();
       isSubmitted = true;
       setTimeout(() => {
         isSubmitted = false;
       }, 5000);
-    }
-  
-    async function sendToDiscordWebhook() {
-      // Implement sending the form data to the Discord webhook
     }
   
     function clearForm() {
@@ -36,7 +33,7 @@
 </script>
   
 <Layout displayFooter={showFooter}>
-  <div id="container">
+  <div id="container" style="opacity: {showFooter ? 1 : 0};">
     <h1>{title}</h1>
     <form on:submit={handleSubmit} autocomplete="off">
       <label>

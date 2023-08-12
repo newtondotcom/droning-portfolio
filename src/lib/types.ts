@@ -5,5 +5,6 @@ export interface Project {
     description: string;
     key: string;
     hovered?: boolean;
+    duration : string;
   }
   

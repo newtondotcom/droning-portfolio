@@ -1,29 +1,16 @@
 <script lang="ts">
     import { onMount } from 'svelte';
-    import { getProjectsFromDatabase } from '../lib/api';
     import type { Project } from '../lib/types';
-    import { createEventDispatcher } from 'svelte';
     import Layout from './layout.svelte';
     import { goto } from '$app/navigation';
     import {delay, delayAnimation} from '../lib/constants';
 
     let displayGrid: boolean = false;
 
-    let displayFooter = true;
+    let displayFooter = false;
+    let datas : any[] = [];
 
-    export let projects: Project[] = [];
-
-    const dispatch = createEventDispatcher();
-
-    function handleMouseEnter(project: Project) {
-      project.hovered = true;
-      console.log('hovered');
-      document.body.style.cursor = 'pointer';
-    }
-
-    function handleMouseLeave() {
-      projects = projects.map((project) => ({ ...project, hovered: false }));
-    }
+    export let data: {} = {};
 
     function handleClick(project: Project) {
       displayGrid = false;
@@ -34,8 +21,8 @@
     }
 
     onMount(async () => {
-      projects = await getProjectsFromDatabase();
-      displayGrid = true;
+      datas = data.data;
+      displayFooter = true;
     });
 
 </script>
@@ -43,17 +30,15 @@
 <Layout displayFooter={displayFooter}>
   <div class="container" >
       <div class="grid">
-        {#each projects as project}
+        {#each datas as project}
           <!-- svelte-ignore a11y-click-events-have-key-events -->
           <!-- svelte-ignore a11y-no-static-element-interactions -->
           <div
             class="project-case" style="opacity: {displayFooter ? 1 : 0}; transition: opacity 0.{delayAnimation}s ease;"
-            on:mouseenter={() => handleMouseEnter(project)}
-            on:mouseleave={() => handleMouseLeave()}
             on:click={() => handleClick(project)}
           >
-            <img src={project.thumbnail} alt={project.name} />
-            <div class="overwrite">test</div>
+            <img loading="lazy" src={project.thumbnail} alt={project.name} />
+            <div class="overwrite">{project.name}</div>
           </div>
         {/each}
       </div>
