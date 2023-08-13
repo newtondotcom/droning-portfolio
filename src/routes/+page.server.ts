@@ -9,7 +9,7 @@ export function load() {
           thumbnail: "https://www.rocketmortgage.com/resources-cmsassets/RocketMortgage.com/Article_Images/Large_Images/TypesOfHomes/types-of-homes-hero.jpg",
           videoLink: "fZw_SWMVpfM",
           description: "Description of Project 1",
-          key: "1",
+          key: "0",
           duration: "200",
         },
         {
@@ -17,7 +17,7 @@ export function load() {
           thumbnail: "https://www.rocketmortgage.com/resources-cmsassets/RocketMortgage.com/Article_Images/Large_Images/TypesOfHomes/types-of-homes-hero.jpg",
           videoLink: "5T7OMVLQLwE",
           description: "Description of Project 2",
-          key: "2",
+          key: "1",
           duration: "200",
         }]
         return {data};

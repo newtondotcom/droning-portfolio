@@ -1,19 +1,17 @@
 <script lang="ts">
     import Layout from "../layout.svelte";
-    import {delay, discordWebhook} from "../../lib/constants";
+    import {onMount} from "svelte";
+    import {delay, discordWebhook, delayAnimation} from "../../lib/constants";
     import {sendToDiscordWebhook} from "./discord";
-  
-    setTimeout(() => {
-      showFooter = true;
-    }, delay);
 
     let isSubmitted:boolean = false;
-    let showFooter:boolean = false;
+    let showForm:boolean = false;
     let title:string = "Contact form";
     let name:string = "";
     let email:string = "";
     let message:string = "";
     let messageSubmitted:string = "Thanks, I will be in touch with you shortly.";
+
 
     async function handleSubmit(event: { preventDefault: () => void; }) {
       event.preventDefault();
@@ -30,10 +28,17 @@
       email = "";
       message = "";
     }
+
+    onMount(async () => {
+      setTimeout(() => {
+      showForm = true;
+    }, delay);
+    });
+
 </script>
   
-<Layout displayFooter={showFooter}>
-  <div id="container" style="opacity: {showFooter ? 1 : 0};">
+<Layout >
+  <div id="container" style="opacity: {showForm ? 1 : 0}; transition: opacity 0.{delayAnimation}s ease;">
     <h1>{title}</h1>
     <form on:submit={handleSubmit} autocomplete="off">
       <label>

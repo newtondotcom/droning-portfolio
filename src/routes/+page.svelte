@@ -27,7 +27,7 @@
 
 </script>
 
-<Layout displayFooter={displayFooter}>
+<Layout>
   <div class="container" >
       <div class="grid">
         {#each datas as project}
