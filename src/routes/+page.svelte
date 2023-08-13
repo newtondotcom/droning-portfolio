@@ -5,15 +5,12 @@
     import { goto } from '$app/navigation';
     import {delay, delayAnimation} from '../lib/constants';
 
-    let displayGrid: boolean = false;
-
     let displayFooter = false;
     let datas : any[] = [];
 
     export let data: {} = {};
 
     function handleClick(project: Project) {
-      displayGrid = false;
       displayFooter = false;
       setTimeout(() => {
         goto(`/project/${project.key}/`);
@@ -21,7 +18,7 @@
     }
 
     onMount(async () => {
-      datas = data.data;
+      datas = data.projectData;
       displayFooter = true;
     });
 

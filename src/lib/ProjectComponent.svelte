@@ -3,7 +3,6 @@
   export let videoReady = true;
 
   import { onMount, onDestroy} from 'svelte';
-  import { goto } from '$app/navigation';
   import {delay, delayAnimation} from './constants';
   import { YouTube } from 'svelte-yt';
 
@@ -20,7 +19,6 @@
   let currentTime: number = 0;
   let duration:number = 0;
   let isPlaying = false;
-  let displayFooter = false;
   let description:string;
   let videoId:any;
 
@@ -61,7 +59,7 @@
     };
 
     setTimeout(() => {
-        displayFooter = true;
+        videoReady = true;
       }, delay);
 
       const updateInterval = setInterval(async () => {
@@ -141,7 +139,7 @@
           </button>
           -->
         </div>
-        <div id="desc" style="opacity: {displayFooter ? 1 : 0};">
+        <div id="desc" style="opacity: {videoReady ? 1 : 0}; transition: opacity 0.{delayAnimation}s ease;">
           <p>{description}</p>
         </div>
   </div>
