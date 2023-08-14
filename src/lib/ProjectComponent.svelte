@@ -1,9 +1,9 @@
 <script lang="ts">
-  export let selectedProject: any;
   export let videoReady = true;
+  export let index : number;
 
   import { onMount, onDestroy} from 'svelte';
-  import {delay, delayAnimation} from './constants';
+  import Constants from './constants';
   import { YouTube } from 'svelte-yt';
 
   // Can be used to control full YouTube player
@@ -21,11 +21,13 @@
   let isPlaying = false;
   let description:string;
   let videoId:any;
+  let datas : any[] = [];
 
   onMount(async () => {
-    videoId = selectedProject.videoLink;
-    duration = parseInt(selectedProject.duration, 10);
-    description = selectedProject.description;
+    datas = JSON.parse(await fetch('/db.json').then((r) => r.text()));
+    videoId = datas[index].videoLink;
+    duration = parseInt(datas[index].duration, 10);
+    description = datas[index].description;
 
     if (window.screen.width > 768) {
       width = window.screen.width;
@@ -60,7 +62,7 @@
 
     setTimeout(() => {
         videoReady = true;
-      }, delay);
+      }, Constants.delay);
 
       const updateInterval = setInterval(async () => {
         if (player) {
@@ -123,7 +125,7 @@
 
     <!-- svelte-ignore a11y-click-events-have-key-events -->
     <!-- svelte-ignore a11y-no-static-element-interactions -->
-        <div class="controls-container" style ="opacity: {videoReady ? 1 : 0}; transition: opacity 0.{delayAnimation}s ease;">
+        <div class="controls-container" style ="opacity: {videoReady ? 1 : 0}; transition: opacity 0.{Constants.delayAnimation}s ease;">
           <button id="btton" on:click={() => togglePlayPause()}>
             {isPlaying ? 'pause' : 'play'}
           </button>
@@ -139,7 +141,7 @@
           </button>
           -->
         </div>
-        <div id="desc" style="opacity: {videoReady ? 1 : 0}; transition: opacity 0.{delayAnimation}s ease;">
+        <div id="desc" style="opacity: {videoReady ? 1 : 0}; transition: opacity 0.{Constants.delayAnimation}s ease;">
           <p>{description}</p>
         </div>
   </div>

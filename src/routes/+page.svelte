@@ -1,24 +1,22 @@
 <script lang="ts">
     import { onMount } from 'svelte';
-    import type { Project } from '../lib/types';
+    import type { Project } from '$lib/types';
     import Layout from './layout.svelte';
     import { goto } from '$app/navigation';
-    import {delay, delayAnimation} from '../lib/constants';
+    import Constants from '$lib/constants';
 
     let displayFooter = false;
     let datas : any[] = [];
-
-    export let data: {} = {};
 
     function handleClick(project: Project) {
       displayFooter = false;
       setTimeout(() => {
         goto(`/project/${project.key}/`);
-      }, delay);
+      }, Constants.delay);
     }
 
     onMount(async () => {
-      datas = data.projectData;
+      datas = JSON.parse(await fetch('/db.json').then((r) => r.text()));
       displayFooter = true;
     });
 
@@ -31,7 +29,7 @@
           <!-- svelte-ignore a11y-click-events-have-key-events -->
           <!-- svelte-ignore a11y-no-static-element-interactions -->
           <div
-            class="project-case" style="opacity: {displayFooter ? 1 : 0}; transition: opacity 0.{delayAnimation}s ease;"
+            class="project-case" style="opacity: {displayFooter ? 1 : 0}; transition: opacity 0.{Constants.delayAnimation}s ease;"
             on:click={() => handleClick(project)}
           >
             <img loading="lazy" src={project.thumbnail} alt={project.name} />

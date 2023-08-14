@@ -2,21 +2,20 @@
   import { onMount, setContext } from 'svelte';
   import Layout from './../../layout.svelte';
   import { goto } from '$app/navigation';
-  import {delay, delayAnimation} from '../../../lib/constants';
-  import ProjectComponent from '../../../lib/ProjectComponent.svelte';
+  import Constants from '$lib/constants';
+  import ProjectComponent from '$lib/ProjectComponent.svelte';
   
   let videoReady = true;
-  let index : number;
-  let selectedProject : any;
   let length : number;
+  let datas : any[] = [];
+  let index : number;
 
   export let data;
 
   index = parseInt(data.index,10);
-  selectedProject = data.projectData[index];
-  length = data.length;
 
   onMount(async () => {
+    length = datas.length;
   });
 
   function goBack() {
@@ -28,24 +27,24 @@
     videoReady = false;
     setTimeout(() => {
       document.location.href = `/project/${index}`;
-    }, delay);
+    }, Constants.delay);
   }
 
 </script>
 
 <Layout>
-  <ProjectComponent selectedProject={selectedProject} bind:videoReady/>
+  <ProjectComponent index={parseInt(data.index,10)} bind:videoReady/>
 
     <!-- svelte-ignore a11y-click-events-have-key-events -->
   <!-- svelte-ignore a11y-no-static-element-interactions -->
   <!-- svelte-ignore a11y-missing-attribute -->
-  <a style ="opacity: {videoReady ? 1 : 0}; transition: opacity 0.{delayAnimation}s ease;" id="previous" class="nav" on:click={goBack}>go back</a>
+  <a style ="opacity: {videoReady ? 1 : 0}; transition: opacity 0.{Constants.delayAnimation}s ease;" id="previous" class="nav" on:click={goBack}>go back</a>
   <!-- svelte-ignore a11y-click-events-have-key-events -->
   <!-- svelte-ignore a11y-no-static-element-interactions -->
   <!-- svelte-ignore a11y-missing-attribute -->
-  <a style="opacity: {videoReady ? 1 : 0}; transition: opacity 0.{delayAnimation}s ease;" id="next" class="nav" on:click={goNext}>next</a>
+  <a style="opacity: {videoReady ? 1 : 0}; transition: opacity 0.{Constants.delayAnimation}s ease;" id="next" class="nav" on:click={goNext}>next</a>
 
-  <div class="nav-mobileC" style ="opacity: {videoReady ? 1 : 0}; transition: opacity 0.{delayAnimation}s ease;">
+  <div class="nav-mobileC" style ="opacity: {videoReady ? 1 : 0}; transition: opacity 0.{Constants.delayAnimation}s ease;">
     <!-- svelte-ignore a11y-click-events-have-key-events -->
     <!-- svelte-ignore a11y-no-static-element-interactions -->
     <!-- svelte-ignore a11y-missing-attribute -->

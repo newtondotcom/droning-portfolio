@@ -1,7 +1,7 @@
-import {discordWebhook, color} from '../../lib/constants'
+import Constants from '$lib/constants'
 
 export async function sendToDiscordWebhook(message : string ,email: string,names: string){
-    fetch(discordWebhook, {
+    fetch(Constants.discordWebhook, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -9,7 +9,7 @@ export async function sendToDiscordWebhook(message : string ,email: string,names
           content : message,
           embeds: [
             {
-              color: color,
+              color: Constants.color,
               title: "Nouveau message de "+names,
               description: "Contact : "+email,
             },

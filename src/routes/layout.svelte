@@ -1,11 +1,11 @@
 <script lang="ts">
-    import {delay} from '../lib/constants';
+    import Constants from '$lib/constants';
     import { goto } from '$app/navigation';
 
     function goContact() {
         setTimeout(() => {
             goto(`/contact/`);
-        }, delay);
+        }, Constants.delay);
     }
 
 </script>
@@ -70,17 +70,6 @@ main {
     z-index: 89;
 }
 
-.contact {
-    font-size: 2rem;
-    color: white;
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    border : 2px dashed white;
-    border-radius: 20px;
-    padding : 7px;
-}
-
 .contactmobile {
     display: none;
 }
@@ -110,28 +99,7 @@ main {
     opacity: 1;
 }
 
-.copyright {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100vw;
-    height: 50px;
-    background-color: black;
-    color: white;
-    font-size: 1rem;
-    font-family: 'VT323', monospace;
-    font-weight: bold;
-}
-
-.link {
-    color: white;
-    text-decoration: none;
-}
-
 @media (max-width: 768px) {
-    .contact {
-        display: none;
-    }
 
     .contactmobile {
         display: block;
@@ -167,21 +135,9 @@ main {
         top: 0;
         left: 10px;
     }
-
-    .copyright {
-        font-size: 2em;
-        flex-wrap: nowrap;
-        color: white;
-        position: absolute;
-        bottom: 0;
-        left: 10px;
-    }
 } 
 
 @media (max-height: 500px) {
-    .contact {
-        display: none;
-    }
     
     .contactmobile {
         display: block;
@@ -196,7 +152,7 @@ main {
         z-index: 2;
         background-color: black;
     }
-    }
+}
 
 
 /* button from https://codepen.io/ash_creator/pen/oNyNbNO */

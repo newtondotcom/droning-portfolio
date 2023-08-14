@@ -14,3 +14,4 @@ vite.config.ts.timestamp-*
 .eslintcache
 gpt-engineer.txt
 launch.bat
+src/lib/constants.ts

@@ -20,6 +20,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"fs-extra": "^11.1.1",
 		"mysql": "^2.18.1",
 		"svelte-yt": "^0.2.0"
 	}
