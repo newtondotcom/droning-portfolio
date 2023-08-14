@@ -1,16 +1,16 @@
 <script lang="ts">
     import Layout from "../layout.svelte";
     import {onMount} from "svelte";
-    import {delay, discordWebhook, delayAnimation} from "../../lib/constants";
+    import {delay, delayAnimation} from "../../lib/constants";
     import {sendToDiscordWebhook} from "./discord";
 
     let isSubmitted:boolean = false;
     let showForm:boolean = false;
-    let title:string = "Contact form";
+    let title:string = "formulaire de contact";
     let name:string = "";
     let email:string = "";
     let message:string = "";
-    let messageSubmitted:string = "Thanks, I will be in touch with you shortly.";
+    let messageSubmitted:string = "Merci, je vous recontacterai dans les plus brefs délais.";
 
 
     async function handleSubmit(event: { preventDefault: () => void; }) {
@@ -42,27 +42,27 @@
     <h1>{title}</h1>
     <form on:submit={handleSubmit} autocomplete="off">
       <label>
-        <div class="name">Your Name:</div>
+        <div class="name">votre nom & prénom</div>
         <input id="simple" type="text" bind:value={name} required autocomplete="off"/>
       </label>
       <label>
-        <div class="name">Your Email:</div>
+        <div class="name">votre message</div>
         <input id="simple" type="email" bind:value={email} required autocomplete="off"/>
       </label>
       <label>
-        <div  class="name">Message:</div>
+        <div  class="name">message</div>
         <textarea id="large" bind:value={message} required autocomplete="off"></textarea>
       </label>
       <div class="submitted" style="display:{isSubmitted ? 'block' : 'none'};" >
         {messageSubmitted}
       </div>
       <div class="button">
-        <button id="button" type="submit">Submit</button>
+        <button id="button" type="submit">Soumettre</button>
       </div>
     </form>
-  <div id="or">or</div>
+  <div id="or">ou</div>
   <div id="mail">
-    Send me an <a id="mailb" href="mailto:robin.augereau@protonmail.com">email</a>
+    Envoyez moi un <a id="mailb" href="mailto:robin.augereau@protonmail.com">email</a>
   </div>
 </div>
 </Layout>
