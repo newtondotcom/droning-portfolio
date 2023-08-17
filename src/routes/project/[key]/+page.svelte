@@ -35,7 +35,7 @@
 <Layout>
   <ProjectComponent index={parseInt(data.index,10)} bind:videoReady/>
 
-    <!-- svelte-ignore a11y-click-events-have-key-events -->
+  <!-- svelte-ignore a11y-click-events-have-key-events -->
   <!-- svelte-ignore a11y-no-static-element-interactions -->
   <!-- svelte-ignore a11y-missing-attribute -->
   <a style ="opacity: {videoReady ? 1 : 0}; transition: opacity 0.{Constants.delayAnimation}s ease;" id="previous" class="nav" on:click={goBack}>go back</a>

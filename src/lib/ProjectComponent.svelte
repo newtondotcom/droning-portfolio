@@ -74,7 +74,7 @@
         } else {
           currentTime = 0;
         }
-      }, 1000);
+      }, 100);
   });
 
   function onPause(event:any) {
