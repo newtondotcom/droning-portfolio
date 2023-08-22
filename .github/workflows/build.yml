@@ -32,5 +32,5 @@ jobs:
         with:
           context: .
           push: true
-          tags: newtondotcom/wol-discord:latest
+          tags: newtondotcom/portofolio:latest
           platforms: linux/arm64
