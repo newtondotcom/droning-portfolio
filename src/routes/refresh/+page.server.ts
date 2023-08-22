@@ -1,5 +1,6 @@
 import { createConnection } from 'mysql2/promise';
-import { writeJson } from 'fs-extra';
+import pkg from 'fs-extra';
+const { writeJson } = pkg;
 import Constants from '$lib/constants';
 import type { Project } from '$lib/types';
 
