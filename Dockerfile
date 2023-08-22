@@ -1,11 +1,18 @@
 FROM node:18-alpine
 
+LABEL Developers="Robin Augereau"
+
 WORKDIR /app
 
-COPY ["package.json", "package-lock.json*", "./"]
+COPY . .
 
+# RUN npm ci
 RUN npm install --production
 
-COPY ./build/ .
+RUN npm run build
 
-CMD ["node", "index.js"]
+RUN rm -rf src/ static/ Dockerfile
+
+USER node:node
+
+CMD ["node","build/index.js"]
