@@ -17,4 +17,6 @@ RUN rm -rf src/ static/ Dockerfile
 
 USER node:node
 
+EXPOSE 3000
+
 CMD ["node","build/index.js"]
