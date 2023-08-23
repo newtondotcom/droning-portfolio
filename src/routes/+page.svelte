@@ -38,7 +38,7 @@
         {/each}
       </div>
       <div class="row">
-        <div class="title">A propos</div>
+        <div class="title">a propos</div>
         <div class="description">Je suis Robin Augereau, un pilote de drone et vidéaste français. Spécialisé dans la prise de vue intérieure, je peux aussi faire de la cinématique extérieure. N'hésitez pas à me contacter pour plus d'infos.</div>
       </div>
   </div>

@@ -57,7 +57,7 @@
         {messageSubmitted}
       </div>
       <div class="button">
-        <button id="button" type="submit">Soumettre</button>
+        <button id="button" type="submit">soumettre</button>
       </div>
     </form>
   <div id="or">ou</div>
