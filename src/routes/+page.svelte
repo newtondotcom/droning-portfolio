@@ -1,7 +1,7 @@
 <script lang="ts">
     import { onMount } from 'svelte';
     import type { Project } from '$lib/types';
-    import Layout from './layout.svelte';
+    import Layout from './+layout.svelte';
     import { goto } from '$app/navigation';
     import Constants from '$lib/constants';
 
@@ -155,6 +155,10 @@
   width: 80vw;
   height: auto;
   object-fit: cover;
+  }
+
+  .container {
+    margin-bottom: 300px;
   }
 } 
 

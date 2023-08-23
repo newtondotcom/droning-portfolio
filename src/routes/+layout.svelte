@@ -17,7 +17,7 @@
     <!-- svelte-ignore a11y-missing-attribute -->
     <div class="container">
 
-        <a on:click={goContact} class="button">
+        <a on:click={goContact} class="button contact">
           <div class="button__line"></div>
           <div class="button__line"></div>
           <span class="button__text">me contacter</span>
@@ -115,6 +115,10 @@ main {
         background-color: black;
     }
 
+    .contact {
+        display: none;
+    }
+
     .svg {
         width: 10vw;
         margin : 10px;
@@ -122,7 +126,7 @@ main {
 
     .footer {    
         position : absolute;
-        top: 120%;
+        top: 100%;
         margin-top: 10px;
         align-self: center;
     }
