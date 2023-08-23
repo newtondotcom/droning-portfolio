@@ -4,7 +4,7 @@ LABEL Developers="Robin Augereau"
 
 WORKDIR /app
 
-COPY . .
+COPY --chown=node:node . .
 
 # RUN npm ci
 #RUN npm install --production
