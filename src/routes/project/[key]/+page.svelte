@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount, setContext } from 'svelte';
-  import Layout from './../../layout.svelte';
+  import Layout from '../../+layout.svelte;
   import { goto } from '$app/navigation';
   import Constants from '$lib/constants';
   import ProjectComponent from '$lib/ProjectComponent.svelte';

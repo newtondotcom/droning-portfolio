@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Layout from "../layout.svelte";
+    import Layout from "../+layout.svelte";
     import {onMount} from "svelte";
     import Constants from "$lib/constants";
     import {sendToDiscordWebhook} from "./discord";
@@ -46,7 +46,7 @@
         <input id="simple" type="text" bind:value={name} required autocomplete="off"/>
       </label>
       <label>
-        <div class="name">votre message</div>
+        <div class="name">votre email</div>
         <input id="simple" type="email" bind:value={email} required autocomplete="off"/>
       </label>
       <label>
@@ -162,68 +162,74 @@
   }
 
   @media (max-width: 768px) {
-    #container {
-      margin-top: 20px;
-      height: 100vh;
-    }
+    
+      #container {
+        margin-top: 100px;
+        height: 100vh;
+        margin-bottom: 100px;
+        overflow: hidden;
+      }
 
-  h1 {
-    font-size: 3rem;
-  }
+      h1 {
+        font-size: 2.5rem;
+        width: 60vw;
+      }
 
-  .name {
-    font-size: 2rem;
-  }
+      .name {
+        font-size: 1rem;
+      }
 
-  #simple {
-    width: 200px;
-    height: 30px;
-    font-size: 1.5rem;
-    margin-bottom: 20px;
-  }
+      #simple {
+        width: 200px;
+        height: 30px;
+        font-size: 1rem;
+        margin-bottom: 20px;
+      }
 
-  #large {
-    width: 90vw;
-    height: 30vw;
-    font-size: 1.5rem;
-    margin-bottom: 20px;
-  }
+      #large {
+        width: 90vw;
+        height: 30vw;
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+      }
 
-  #or {
-    font-size: 3rem;
-    margin-top: 20px;
-  }
+      #or {
+        font-size: 3rem;
+        margin-top: 20px;
+      }
 
-  #mail {
-    font-size: 2rem;
-    margin-top: 50px;
-  }
+      #mail {
+        font-size: 2rem;
+        margin-top: 30px;
+        margin-bottom: 10px;
+      }
 
-  .button {
-    position: absolute;
-    top: 35%;
-    left: 60%;
-    transform: rotate(90deg);
-  }
+      .button {
+        position: absolute;
+        top: 50%;
+        left: 75%;
+        transform: rotate(45deg);
+        overflow: hidden;
+      }
 
-  #button{
-    font-size: 3rem;
-  }
+      #button{
+        font-size: 2rem;
+      }
 
-  #mailb {
-    color: white;
-    text-decoration: none;
-    border-bottom: 2px solid white;
-  }
+      #mailb {
+        color: white;
+        text-decoration: none;
+        border-bottom: 2px solid white;
+      }
 
-  .submitted {
-    font-size: 1rem;
-    font-family: Consolada, monospace;
-    color: white;
-    z-index: 89;
-    margin-top: 50px;
-    margin-left: 20px;
-  }
+      .submitted {
+        font-size: 1rem;
+        font-family: Consolada, monospace;
+        color: rebeccapurple;
+        z-index: 89;
+        margin-top: 50px;
+        margin-left: 20px;
+      }
 
   }
 </style>
