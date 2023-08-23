@@ -32,12 +32,12 @@
     if (window.screen.width > 768) {
       width = window.screen.width;
       console.log(width);
+      width = 360;
     } else {
       width = 360;
+      console.log(width);
     }
-    width = 640;
     height = width * 0.5625;
-
 
     options = {
       playerVars: {
@@ -113,6 +113,7 @@
 </script>
 
 <div class="video-container">
+    <div id="behind"></div>
     <YouTube 
     bind:player 
     on:play={onPlay}
@@ -149,11 +150,31 @@
 
   <style>
     .video-container {
-      margin-top: 150px;
+      position: absolute;
+      width: 640px;
+      height: 500px;
+      top : calc(50% - 400px);
+      left : calc(50% - 320px);
       align-items: center;
       display: flex;
       flex-direction: column;
       justify-content: center;
+      margin-top: 150px;
+    }
+
+    #behind {
+      position: absolute;
+      width: 640px;
+      height: 500px;
+      top : calc(50% - 400px);
+      left : calc(50% - 320px);
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin-top: 150px;
+      background-color: black;
+      z-index: -1;
     }
   
   
@@ -183,10 +204,11 @@
     }
   
     .controls-container {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin-top: 10px;
+        width: 640px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 10px;
       }
   
       .time-container {
@@ -202,9 +224,9 @@
   
       @media (max-width: 768px) {
           .video-container {
-              margin-top: 450px;
+              margin-top: 250px;
               margin-bottom: 50px;
-              height: 40vh; 
+              height: 50vh; 
               display: flex;
               flex-direction: column;
               justify-content: center;

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount, setContext } from 'svelte';
-  import Layout from '../../+layout.svelte;
+  import Layout from '../../+layout.svelte';
   import { goto } from '$app/navigation';
   import Constants from '$lib/constants';
   import ProjectComponent from '$lib/ProjectComponent.svelte';
@@ -9,13 +9,19 @@
   let length : number;
   let datas : any[] = [];
   let index : number;
+  let nextIndex : number;
 
   export let data;
 
   index = parseInt(data.index,10);
 
   onMount(async () => {
+    datas = JSON.parse(await fetch('/db.json').then((r) => r.text()));
     length = datas.length;
+    nextIndex = (index + 1)%length;
+    console.log(length);
+    console.log(index);
+    console.log(nextIndex);
   });
 
   function goBack() {
@@ -26,33 +32,36 @@
     index = (index + 1)%length;
     videoReady = false;
     setTimeout(() => {
-      document.location.href = `/project/${index}`;
+      goto(`/project/${nextIndex}`);
     }, Constants.delay);
   }
 
 </script>
 
 <Layout>
-  <ProjectComponent index={parseInt(data.index,10)} bind:videoReady/>
+  <ProjectComponent index={index} bind:videoReady/>
 
   <!-- svelte-ignore a11y-click-events-have-key-events -->
   <!-- svelte-ignore a11y-no-static-element-interactions -->
   <!-- svelte-ignore a11y-missing-attribute -->
   <a style ="opacity: {videoReady ? 1 : 0}; transition: opacity 0.{Constants.delayAnimation}s ease;" id="previous" class="nav" on:click={goBack}>go back</a>
+
+  
   <!-- svelte-ignore a11y-click-events-have-key-events -->
   <!-- svelte-ignore a11y-no-static-element-interactions -->
   <!-- svelte-ignore a11y-missing-attribute -->
-  <a style="opacity: {videoReady ? 1 : 0}; transition: opacity 0.{Constants.delayAnimation}s ease;" id="next" class="nav" on:click={goNext}>next</a>
+  <!--<a style="opacity: {videoReady ? 1 : 0}; transition: opacity 0.{Constants.delayAnimation}s ease;" id="next" class="nav" on:click={goNext}>next</a>-->
 
   <div class="nav-mobileC" style ="opacity: {videoReady ? 1 : 0}; transition: opacity 0.{Constants.delayAnimation}s ease;">
+      <!-- svelte-ignore a11y-click-events-have-key-events -->
+      <!-- svelte-ignore a11y-no-static-element-interactions -->
+      <!-- svelte-ignore a11y-missing-attribute -->
+    <a id="previousm" class="nav-mobile" on:click={goBack}>go back</a>
     <!-- svelte-ignore a11y-click-events-have-key-events -->
     <!-- svelte-ignore a11y-no-static-element-interactions -->
     <!-- svelte-ignore a11y-missing-attribute -->
-  <a id="previousm" class="nav-mobile" on:click={goBack}>go back</a>
-  <!-- svelte-ignore a11y-click-events-have-key-events -->
-  <!-- svelte-ignore a11y-no-static-element-interactions -->
-  <!-- svelte-ignore a11y-missing-attribute -->
-  <a id="nextm" class="nav-mobile"on:click={goNext}>next</a>
+    <!--<a id="nextm" class="nav-mobile"on:click={goNext}>next</a>-->
+  </div>
 </Layout>
 
 <style>
@@ -106,7 +115,7 @@
           justify-content: center;
           align-items: center;
           position: fixed;
-          bottom: 0;
+          bottom: 100px;
         }
 
         .nav-mobile {

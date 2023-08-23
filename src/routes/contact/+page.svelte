@@ -3,6 +3,7 @@
     import {onMount} from "svelte";
     import Constants from "$lib/constants";
     import {sendToDiscordWebhook} from "./discord";
+    import Footer from "$lib/Footer.svelte";
 
     let isSubmitted:boolean = false;
     let showForm:boolean = false;
@@ -64,6 +65,21 @@
   <div id="mail">
     Envoyez moi un <a id="mailb" href="mailto:robin.augereau@protonmail.com">email</a>
   </div>
+  <Footer>
+    <style>
+      .footer {
+        display : block;
+        position : relative;
+      }
+      @media (max-width: 768px) {
+        .footer {
+          display : block;
+          position : relative;
+          margin-top : 50px;
+        }
+      }
+    </style>
+  </Footer> />
 </div>
 </Layout>
 
@@ -75,6 +91,7 @@
     align-items: center;
     justify-content: center;
     height: 100vh;
+    overflow: hidden;
   }
 
   h1 {
@@ -172,6 +189,7 @@
 
       h1 {
         font-size: 2.5rem;
+        margin-top: 100px;
         width: 60vw;
       }
 

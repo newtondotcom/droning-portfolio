@@ -4,6 +4,7 @@
     import Layout from './+layout.svelte';
     import { goto } from '$app/navigation';
     import Constants from '$lib/constants';
+    import Footer from '$lib/Footer.svelte';
 
     let displayFooter = false;
     let datas : any[] = [];
@@ -38,9 +39,26 @@
         {/each}
       </div>
       <div class="row">
-        <div class="title">a propos</div>
+        <div class="title">à propos</div>
         <div class="description">Je suis Robin Augereau, un pilote de drone et vidéaste français. Spécialisé dans la prise de vue intérieure, je peux aussi faire de la cinématique extérieure. N'hésitez pas à me contacter pour plus d'infos.</div>
       </div>
+  
+    <Footer>
+      <style>
+        .footer {
+          display : block;
+          position : relative;
+        }
+        @media (max-width: 768px) {
+          .footer {
+            display : block;
+            position : relative;
+            margin-top : 50px;
+          }
+        }
+      </style>
+    </Footer> />
+  
   </div>
 </Layout>
 
@@ -53,6 +71,7 @@
   align-items: center;
   justify-content: center;
   margin-top: 100px;
+  overflow: hidden;
 }
 
 .grid {
