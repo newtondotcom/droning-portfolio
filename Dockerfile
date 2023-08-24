@@ -4,6 +4,8 @@ LABEL Developers="Robin Augereau"
 
 WORKDIR /app
 
+USER node:node
+
 COPY --chown=node:node . .
 
 # RUN npm ci
@@ -12,8 +14,6 @@ RUN npm install
 RUN npm run build
 
 RUN rm -rf src/ static/ Dockerfile
-
-USER node:node
 
 EXPOSE 3000
 
