@@ -26,7 +26,7 @@ export async function load() {
       duration: row.duration,
     }));
 
-    await writeJson('db.json', projectData, { spaces: 2 });
+    await writeJson('build/client/db.json', projectData, { spaces: 2 });
   } catch (err) {
     console.error('Error fetching data:', err);
     const defaultData: Project[] = [
