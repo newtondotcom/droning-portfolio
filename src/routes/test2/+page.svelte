@@ -79,10 +79,11 @@ onMount(() => {
 
 <style>
     media-player {
-        width: 80vw;
-        height: calc(80vw/16*9);
+        width: 60vw;
+        height: calc(60vw/16*9);
         position: absolute;
-        top: 200px;
+        top: 150px;
+        left : calc(50vw - 30vw);
         --vm-player-theme: #cc234d;
     }
 

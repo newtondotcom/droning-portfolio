@@ -1,1 +1,1 @@
-ffmpeg -i small.mp4 -g 60 -hls_time 2 -hls_list_size 0 -hls_segment_size 500000 output.m3u8
+ffmpeg -i small.mp4 -vf "scale=1920:1080" -r 60 -g 120 -hls_time 4 -hls_list_size 0 -hls_segment_size 500000 output.m3u8
