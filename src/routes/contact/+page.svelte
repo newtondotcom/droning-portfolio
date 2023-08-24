@@ -1,5 +1,4 @@
 <script lang="ts">
-    import Layout from "../+layout.svelte";
     import {onMount} from "svelte";
     import Constants from "$lib/constants";
     import {sendToDiscordWebhook} from "./discord";
@@ -37,8 +36,7 @@
     });
 
 </script>
-  
-<Layout >
+
   <div id="container" style="opacity: {showForm ? 1 : 0}; transition: opacity 0.{Constants.delayAnimation}s ease;">
     <h1>{title}</h1>
     <form on:submit={handleSubmit} autocomplete="off">
@@ -81,7 +79,7 @@
     </style>
   </Footer> />
 </div>
-</Layout>
+
 
 <style>
   #container {

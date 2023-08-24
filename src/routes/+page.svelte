@@ -1,7 +1,6 @@
 <script lang="ts">
     import { onMount } from 'svelte';
     import type { Project } from '$lib/types';
-    import Layout from './+layout.svelte';
     import { goto } from '$app/navigation';
     import Constants from '$lib/constants';
     import Footer from '$lib/Footer.svelte';
@@ -23,7 +22,6 @@
 
 </script>
 
-<Layout>
   <div class="container" >
       <div class="grid">
         {#each datas as project}
@@ -57,10 +55,9 @@
           }
         }
       </style>
-    </Footer> />
+    </Footer> 
   
   </div>
-</Layout>
 
 <style>
 

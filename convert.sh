@@ -1,0 +1,1 @@
+ffmpeg -i small.mp4 -g 60 -hls_time 2 -hls_list_size 0 -hls_segment_size 500000 output.m3u8

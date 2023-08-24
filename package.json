@@ -21,7 +21,11 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@vime/core": "^5.4.1",
+		"@vime/svelte": "^5.4.1",
 		"fs-extra": "^11.1.1",
+		"hls.js": "^1.4.10",
+		"minio": "^7.1.1",
 		"mysql2": "^3.6.0",
 		"svelte-yt": "^0.2.0"
 	}

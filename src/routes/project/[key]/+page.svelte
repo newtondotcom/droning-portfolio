@@ -1,6 +1,5 @@
 <script lang="ts">
   import { onMount, setContext } from 'svelte';
-  import Layout from '../../+layout.svelte';
   import { goto } from '$app/navigation';
   import Constants from '$lib/constants';
   import ProjectComponent from '$lib/ProjectComponent.svelte';
@@ -38,7 +37,7 @@
 
 </script>
 
-<Layout>
+
   <ProjectComponent index={index} bind:videoReady/>
 
   <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -62,7 +61,7 @@
     <!-- svelte-ignore a11y-missing-attribute -->
     <!--<a id="nextm" class="nav-mobile"on:click={goNext}>next</a>-->
   </div>
-</Layout>
+
 
 <style>
 
