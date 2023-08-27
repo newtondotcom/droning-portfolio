@@ -1,0 +1,1 @@
+scp * root@144.91.123.186:/var/www/html/mywebsite

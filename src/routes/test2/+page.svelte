@@ -45,7 +45,7 @@ onMount(() => {
 <!--<media-icon type="chromecast" />-->
 <media-player
   title="Sprite Fight"
-  src="https://media-files.vidstack.io/hls/index.m3u8"
+  src="http://144.91.123.186/latranche/output.m3u8"
   poster="https://media-files.vidstack.io/poster.png"
   aspect-ratio="16/9"
   crossorigin
