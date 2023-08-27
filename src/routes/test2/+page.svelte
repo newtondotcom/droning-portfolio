@@ -1,42 +1,17 @@
-<script lang="js">
+<script lang="ts">
 import 'vidstack/styles/defaults.css'
 import 'vidstack/styles/community-skin/video.css'
 import 'vidstack/icons';
-import { onMount } from 'svelte';
-
 import { defineCustomElements } from 'vidstack/elements';
+import { onMount } from 'svelte';
+import FRENCH from '$lib/translations';
 
 defineCustomElements();
-
-const SPANISH = {
-  Audio: 'Audio',
-  Auto: 'Automático',
-  Captions: 'Subtítulos',
-  Chapters: 'Capítulos',
-  Default: 'Predeterminado',
-  Mute: 'Silenciar',
-  Normal: 'Normal',
-  Off: 'Apagado',
-  Pause: 'Pausa',
-  Play: 'Reproducir',
-  Speed: 'Velocidad',
-  Quality: 'Calidad',
-  Settings: 'Configuración',
-  Unmute: 'Activar sonido',
-  'Seek Forward': 'Avance',
-  'Seek Backward': 'Retroceso',
-  'Closed-Captions On': 'Subtítulos activados',
-  'Closed-Captions Off': 'Subtítulos desactivados',
-  'Enter Fullscreen': 'Entrar en pantalla completa',
-  'Exit Fullscreen': 'Salir de pantalla completa',
-  'Enter PiP': 'Entrar en PiP',
-  'Exit PiP': 'Salir de PiP',
-};
 
 onMount(() => {
     const skin = document.querySelector('media-community-skin');
     if (skin){
-        skin.translations = SPANISH;
+        skin.translations = FRENCH;
     }
 });
 

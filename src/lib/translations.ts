@@ -1,0 +1,26 @@
+const FRENCH = {
+  Audio: 'Audio',
+  Auto: 'Automatique',
+  Captions: 'Sous-titres',
+  Chapters: 'Chapitres',
+  Default: 'Par défaut',
+  Mute: 'Muet',
+  Normal: 'Normal',
+  Off: 'Éteint',
+  Pause: 'Pause',
+  Play: 'Lire',
+  Speed: 'Vitesse',
+  Quality: 'Qualité',
+  Settings: 'Paramètres',
+  Unmute: 'Réactiver le son',
+  'Seek Forward': 'Avancer',
+  'Seek Backward': 'Reculer',
+  'Closed-Captions On': 'Sous-titres activés',
+  'Closed-Captions Off': 'Sous-titres désactivés',
+  'Enter Fullscreen': 'Passer en plein écran',
+  'Exit Fullscreen': 'Quitter le plein écran',
+  'Enter PiP': 'Passer en mode Picture-in-Picture',
+  'Exit PiP': 'Quitter le mode Picture-in-Picture',
+};
+
+export default FRENCH;

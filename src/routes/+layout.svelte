@@ -76,7 +76,7 @@ main {
 
     .contactmobile {
         display: block;
-        font-size: 2rem;
+        font-size: 1.5rem;
         color: white;
         position: fixed;
         bottom : 10px;

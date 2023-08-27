@@ -1,134 +1,122 @@
 <script lang="ts">
-  export let videoReady = true;
-  export let index : number;
-
-  import { onMount, onDestroy} from 'svelte';
+  import { onMount } from 'svelte';
   import Constants from './constants';
-  import { YouTube } from 'svelte-yt';
+  import 'vidstack/styles/defaults.css';
+  import 'vidstack/styles/community-skin/video.css';
+  import 'vidstack/icons';
+  import { defineCustomElements } from 'vidstack/elements';
+  import FRENCH from '$lib/translations';
 
-  // Can be used to control full YouTube player
-  // See https://developers.google.com/youtube/iframe_api_reference#Functions
-  // See https://developers.google.com/youtube/player_parameters#Parameters
+  defineCustomElements();
 
-  let player:any;
-  let options:any;
-  let width:number;
-  let height:number;
-
-
-  let currentTime: number = 0;
-  let duration:number = 0;
+  export let videoReady = true;
+  export let index: number;
+  
+  let isFullScreen = false;
+  let player: any; // Use the appropriate type for your player object
+  let width = 640;
+  let height = 500;
+  let currentTime = 0;
+  let duration = 0;
   let isPlaying = false;
-  let description:string;
-  let videoId:any;
-  let datas : any[] = [];
+  let description: string;
+  let name: string;
+  let videoId: string;
+  let datas: any[] = [];
 
+  async function togglePlayPause(event?: Event) {
+    if (isPlaying) {
+      await player.pause();
+    } else {
+      await player.play();
+    }
+    isPlaying = !isPlaying;
+  }
+
+  function onPause(event: CustomEvent) {
+    isPlaying = false;
+  }
+
+  function onPlay(event: CustomEvent) {
+    isPlaying = true;
+  }
+
+  async function onReady(event: CustomEvent) {
+    videoReady = true;
+  }
+
+  async function toggleFullScreen() {
+    if (isFullScreen) {
+      await player.exitFullscreen();
+    } else {
+      await player.enterFullscreen();
+    }
+    isFullScreen = !isFullScreen;
+  }
+
+  function formatDuration(seconds: number): string {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = Math.floor(seconds % 60);
+    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+  }
+  
   onMount(async () => {
     datas = JSON.parse(await fetch('/db.json').then((r) => r.text()));
     videoId = datas[index].videoLink;
     duration = parseInt(datas[index].duration, 10);
     description = datas[index].description;
+    name = datas[index].name;
 
-    if (window.screen.width > 768) {
-      width = window.screen.width;
-      console.log(width);
-      width = 360;
-    } else {
-      width = 360;
-      console.log(width);
+    const skin = document.querySelector('media-community-skin');
+    if (skin) {
+      skin.translations = FRENCH;
     }
-    height = width * 0.5625;
+    
+    player = document.querySelector('media-player');
 
-    options = {
-      playerVars: {
-        enablejsapi: 1,
-       
-        controls : 0,
-        showinfo : 0,
-        modestbranding: 0,
-
-        loop : 1,
-        autohide : 1,
-        rel : 0,
-        playsinline : 1, // for ios
-        fs : 1,
-        iv_load_policy : 3,
-        autoplay: 1,
-        //color : 'red',
-      },
-      width: width,
-      height: height,
-    };
-
-    setTimeout(() => {
-        videoReady = true;
-      }, Constants.delay);
-
-      const updateInterval = setInterval(async () => {
-        if (player) {
-          if (isPlaying) {
-            currentTime = await player.getCurrentTime();
-          } else if (currentTime < 1) {
-            currentTime = 0;
-          }
-        } else {
-          currentTime = 0;
-        }
-      }, 100);
-  });
-
-  function onPause(event:any) {
-    isPlaying = false;
-  }
-
-  function onPlay(event:any) {
-    isPlaying = true;
-  }
-
-
-  async function onReady(event:any) {
-    videoReady = true;
-    player.setVolume(0);
-  }
-
-  function formatDuration(seconds:number) {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = Math.floor(seconds % 60);
-    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
-  }
-
-  async function togglePlayPause() {
-    if (isPlaying) {
-      await player.pauseVideo();
-    } else {
-      await player.playVideo();
-    }
-  }
-
-  onDestroy(() => {
-    if (player) {
-      player.destroy();
-    }
+    if (!player) return;
+    player.onAttach(async () => {
+      player.addEventListener('data-can-play', onReady);
+      player.addEventListener('pause', onPause);
+      player.addEventListener('play', onPlay);
+      player.addEventListener('time-update', (event: CustomEvent) => {
+        currentTime = event.detail.currentTime;
+      });
+      player.addEventListener('duration-change', (event: CustomEvent) => {
+        duration = event.detail;
+      });
+      player.addEventListener('ready', onReady);
+      player.addEventListener('ended', () => {
+        player.playVideo();
+      });
+    });
   });
 </script>
 
+
 <div class="video-container">
-    <div id="behind"></div>
-    <YouTube 
-    bind:player 
-    on:play={onPlay}
-    on:ready={onReady}
-    on:pause={onPause}
-    {videoId} 
-    {options} 
-    />
+  <media-player
+  title="{name}"
+  src="http://144.91.123.186/latranche/output.m3u8"
+  poster="https://media-files.vidstack.io/poster.png"
+  aspect-ratio="16/9"
+  crossorigin
+  >    
+  <media-outlet>
+      <media-poster
+        alt="{description}"
+      >
+      </media-poster>
+    </media-outlet>
+    <media-community-skin></media-community-skin>
+  </media-player>
     <div id="loading" style="display: {videoReady ? 'none' : 'block'}; width:{width}px; height:{height}px;"></div>
 
     <!-- svelte-ignore a11y-click-events-have-key-events -->
     <!-- svelte-ignore a11y-no-static-element-interactions -->
         <div class="controls-container" style ="opacity: {videoReady ? 1 : 0}; transition: opacity 0.{Constants.delayAnimation}s ease;">
           <button id="btton" on:click={() => togglePlayPause()}>
-            {isPlaying ? 'pause' : 'play'}
+            {isPlaying ? 'pause' : 'lancer'}
           </button>
           <div id="time" class="time-container">
             {formatDuration(currentTime)} {formatDuration(duration)}
@@ -136,11 +124,9 @@
           <div class="progress-bar">
             <div class="progress" style={`width: ${(currentTime / duration) * 100}%`}></div>
           </div>
-          <!--
           <button id="btton" on:click={()=>toggleFullScreen()}>
-            {isFullScreen ? 'Exit Fullscreen' : 'Fullscreen'}
+            {isFullScreen ? 'le quitter' : 'plein écran'}
           </button>
-          -->
         </div>
         <div id="desc" style="opacity: {videoReady ? 1 : 0}; transition: opacity 0.{Constants.delayAnimation}s ease;">
           <p>{description}</p>
@@ -160,21 +146,6 @@
       flex-direction: column;
       justify-content: center;
       margin-top: 150px;
-    }
-
-    #behind {
-      position: absolute;
-      width: 640px;
-      height: 500px;
-      top : calc(50% - 400px);
-      left : calc(50% - 320px);
-      align-items: center;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      margin-top: 150px;
-      background-color: black;
-      z-index: -1;
     }
   
   
@@ -221,10 +192,55 @@
         width: 80vw;
         font-family: Inconsolata, monospace;
       }
+
+      media-player {
+        width: 60vw;
+        height: calc(60vw/16*9);
+        --vm-player-theme: #cc234d;
+        z-index: 1000;
+      }
+
+    /* Avoid double controls on iOS when in fullscreen. */
+    media-player[data-ios-controls] .media-controls,
+    /* Hide controls while media is loading, or user is idle. */
+    media-player:not([data-can-play]) .media-controls,
+    media-player[data-user-idle] .media-controls {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* Show controls if autoplay fails. */
+    media-player[data-autoplay-error] .media-controls {
+      opacity: 1;
+    }
+        /* width <600px */
+    media-player[data-bp-x='sm'] {
+    }
+
+    /* 600px ≤ width < 980 */
+    media-player[data-bp-x='md'] {
+    }
+
+    /* width ≥ 980 */
+    media-player[data-bp-x='lg'] {
+    }
+
+    /* height <380px */
+    media-player[data-bp-y='sm'] {
+    }
+
+    /* 380px ≤ height < 600 */
+    media-player[data-bp-y='md'] {
+    }
+
+    /* height ≥ 600 */
+    media-player[data-bp-y='lg'] {
+    }
+
   
       @media (max-width: 768px) {
           .video-container {
-              margin-top: 250px;
+              margin-top: 10vh;
               margin-bottom: 50px;
               height: 50vh; 
               display: flex;
@@ -257,6 +273,13 @@
             font-size: 20px;
           }
           
+          media-player {
+            width: 60vw;
+            height: calc(60vw/16*9);
+            --vm-player-theme: #cc234d;
+            z-index: 1000;
+          }
+
       }
   
       @media (max-height: 500px) {
