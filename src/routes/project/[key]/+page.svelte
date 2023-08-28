@@ -40,21 +40,17 @@
 
   <ProjectComponent index={index} bind:videoReady/>
 
-  <!-- svelte-ignore a11y-click-events-have-key-events -->
-  <!-- svelte-ignore a11y-no-static-element-interactions -->
-  <!-- svelte-ignore a11y-missing-attribute -->
-  <a style ="opacity: {videoReady ? 1 : 0}; transition: opacity 0.{Constants.delayAnimation}s ease;" id="previous" class="nav" on:click={goBack}>go back</a>
-
+  <button id="back" on:click={goBack} class="comic-button">go back</button>
+  <button id="next" on:click={goNext} class="comic-button">next</button>
   
   <!-- svelte-ignore a11y-click-events-have-key-events -->
   <!-- svelte-ignore a11y-no-static-element-interactions -->
   <!-- svelte-ignore a11y-missing-attribute -->
-  <!--<a style="opacity: {videoReady ? 1 : 0}; transition: opacity 0.{Constants.delayAnimation}s ease;" id="next" class="nav" on:click={goNext}>next</a>-->
 
   <div class="nav-mobileC" style ="opacity: {videoReady ? 1 : 0}; transition: opacity 0.{Constants.delayAnimation}s ease;">
-      <!-- svelte-ignore a11y-click-events-have-key-events -->
-      <!-- svelte-ignore a11y-no-static-element-interactions -->
-      <!-- svelte-ignore a11y-missing-attribute -->
+    <!-- svelte-ignore a11y-click-events-have-key-events -->
+    <!-- svelte-ignore a11y-no-static-element-interactions -->
+    <!-- svelte-ignore a11y-missing-attribute -->
     <a id="previousm" class="nav-mobile" on:click={goBack}>go back</a>
     <!-- svelte-ignore a11y-click-events-have-key-events -->
     <!-- svelte-ignore a11y-no-static-element-interactions -->
@@ -82,22 +78,48 @@
     }
     
 
-    #previous {
-        position: fixed;
-        top: 95%;
-        left: 0;
-        transform: translateY(-50%);
-    }
-
     #next {
         position: fixed;
-        top: 95%;
-        right: 0;
-        transform: translateY(-50%);
+        top: 90%;
+        left: 45%;
+    }
+
+    #back {
+        position: fixed;
+        top: 90%;
+        left: 55%;
     }
 
     .nav-mobileC {
       display: none;
+    }
+
+    .comic-button {
+      display: inline-block;
+      padding: 10px 20px;
+      font-size: 24px;
+      font-weight: bold;
+      text-align: center;
+      text-decoration: none;
+      color: #fff;
+      background-color: #ff5252;
+      border: 2px solid #000;
+      border-radius: 10px;
+      box-shadow: 5px 5px 0px #000;
+      transition: all 0.3s ease;
+    }
+
+    .comic-button:hover {
+      background-color: #fff;
+      color: #ff5252;
+      border: 2px solid #ff5252;
+      box-shadow: 5px 5px 0px #ff5252;
+    }
+
+    .comic-button:active {
+      background-color: #fcf414;
+      box-shadow: none;
+      transform: translateY(4px);
     }
 
     @media (max-width: 768px) {

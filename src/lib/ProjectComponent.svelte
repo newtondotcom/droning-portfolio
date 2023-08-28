@@ -13,7 +13,7 @@
   export let index: number;
   
   let isFullScreen = false;
-  let player: any; // Use the appropriate type for your player object
+  let player: any; 
   let width = 640;
   let height = 500;
   let currentTime = 0;
@@ -102,11 +102,9 @@
   aspect-ratio="16/9"
   crossorigin
   >    
-  <media-outlet>
-      <media-poster
-        alt="{description}"
-      >
-      </media-poster>
+    <media-outlet>
+        <media-poster alt="{description}">
+        </media-poster>
     </media-outlet>
     <media-community-skin></media-community-skin>
   </media-player>
