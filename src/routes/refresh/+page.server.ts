@@ -25,8 +25,15 @@ export async function load() {
       key: row.key,
       duration: row.duration,
     }));
-
+    
+    //check if the file exists
+    let exists = await pkg.pathExists('./db.json');
+    if (!exists) {
+      await pkg.createFile('./db.json');
+      return;
+    }
     await writeJson('./db.json', projectData, { spaces: 2 });
+
   } catch (err) {
     console.error('Error fetching data:', err);
     const defaultData: Project[] = [
