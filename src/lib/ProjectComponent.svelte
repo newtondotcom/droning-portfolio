@@ -318,10 +318,6 @@
               display : none;
           }
   
-          .controls-container {
-            display: none;
-          }
-  
           .time-container {
             font-size: 20px;
           }

@@ -178,20 +178,20 @@
   }
 
   @media (max-width: 768px) {
-    
-      #container {
-        margin-top: 200px;
-        height: 100vh;
-        margin-bottom: 100px;
-        overflow: hidden;
-        margin-left: 0px;
-        padding-left: 20px;
-      }
 
       h1 {
         font-size: 2.5rem;
         margin-top: 100px;
         width: 60vw;
+      }
+
+      #container {
+        margin-top: 300px;
+        height: 100vh;
+        margin-bottom: 100px;
+        overflow: hidden;
+        margin-left: 0px;
+        padding-left: 20px;
       }
 
       .name {
