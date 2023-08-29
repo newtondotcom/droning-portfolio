@@ -42,6 +42,7 @@
   }
 
   async function onReady(event: CustomEvent) {
+    console.log('ready');
     videoReady = true;
   }
 
@@ -109,9 +110,6 @@
     <media-community-skin></media-community-skin>
   </media-player>
     <div id="loading" style="display: {videoReady ? 'none' : 'block'}; width:{width}px; height:{height}px;"></div>
-
-    <!-- svelte-ignore a11y-click-events-have-key-events -->
-    <!-- svelte-ignore a11y-no-static-element-interactions -->
         <div class="controls-container" style ="opacity: {videoReady ? 1 : 0}; transition: opacity 0.{Constants.delayAnimation}s ease;">
           <button id="btton" on:click={() => togglePlayPause()}>
             {isPlaying ? 'pause' : 'lancer'}
@@ -122,7 +120,7 @@
           <div class="progress-bar">
             <div class="progress" style={`width: ${(currentTime / duration) * 100}%`}></div>
           </div>
-          <button id="btton" on:click={()=>toggleFullScreen()}>
+          <button id="btton" class="fullscreen" on:click={()=>toggleFullScreen()}>
             {isFullScreen ? 'le quitter' : 'plein écran'}
           </button>
         </div>
@@ -185,14 +183,14 @@
       }
   
       #desc {
-        margin-top: 50px;
+        margin-top: 20px;
         color : white;
         width: 80vw;
         font-family: Inconsolata, monospace;
       }
 
       media-player {
-        width: 60vw;
+        width: 50vw;
         height: calc(60vw/16*9);
         --vm-player-theme: #cc234d;
         z-index: 1000;
@@ -237,10 +235,13 @@
 
   
       @media (max-width: 768px) {
+
           .video-container {
               margin-top: 10vh;
               margin-bottom: 50px;
-              height: 50vh; 
+              margin-left: 50vw;
+              height: 90vh; 
+              width: 90vw;
               display: flex;
               flex-direction: column;
               justify-content: center;
@@ -264,11 +265,11 @@
             margin-right: 10px;
             font-size: 20px;
           }
-  
-          #desc {
-            margin-top: 20px;
-            width: 80vw;
-            font-size: 20px;
+
+          #back {
+            position: fixed;
+            top: 90%;
+            left: calc(50% - var(--button-width));
           }
           
           media-player {
@@ -276,6 +277,10 @@
             height: calc(60vw/16*9);
             --vm-player-theme: #cc234d;
             z-index: 1000;
+          }
+
+          .fullscreen {
+            display: none;
           }
 
       }

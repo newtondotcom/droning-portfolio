@@ -18,9 +18,6 @@
     datas = JSON.parse(await fetch('/db.json').then((r) => r.text()));
     length = datas.length;
     nextIndex = (index + 1)%length;
-    console.log(length);
-    console.log(index);
-    console.log(nextIndex);
   });
 
   function goBack() {
@@ -51,7 +48,7 @@
     <!-- svelte-ignore a11y-click-events-have-key-events -->
     <!-- svelte-ignore a11y-no-static-element-interactions -->
     <!-- svelte-ignore a11y-missing-attribute -->
-    <a id="previousm" class="nav-mobile" on:click={goBack}>go back</a>
+    <button id="back" class="nav-mobile" on:click={goBack}>go back</button>
     <!-- svelte-ignore a11y-click-events-have-key-events -->
     <!-- svelte-ignore a11y-no-static-element-interactions -->
     <!-- svelte-ignore a11y-missing-attribute -->
@@ -60,6 +57,10 @@
 
 
 <style>
+
+  :root {
+    --button-width: 150px;
+  }
 
   a {
     color: white;
@@ -81,13 +82,13 @@
     #next {
         position: fixed;
         top: 90%;
-        left: 45%;
+        left: calc(50%);
     }
 
     #back {
         position: fixed;
         top: 90%;
-        left: 55%;
+        left: calc(50% - var(--button-width));
     }
 
     .nav-mobileC {
@@ -102,18 +103,20 @@
       text-align: center;
       text-decoration: none;
       color: #fff;
-      background-color: #ff5252;
-      border: 2px solid #000;
+      width: var(--button-width);
+      background-color: black;
+      border: 2px solid white;
       border-radius: 10px;
-      box-shadow: 5px 5px 0px #000;
+      box-shadow: 5px 5px 0px white;
       transition: all 0.3s ease;
+      margin:5px;
     }
 
     .comic-button:hover {
       background-color: #fff;
-      color: #ff5252;
-      border: 2px solid #ff5252;
-      box-shadow: 5px 5px 0px #ff5252;
+      color: black;
+      border: 2px solid white;
+      box-shadow: 5px 5px 0px white;
     }
 
     .comic-button:active {
@@ -156,6 +159,16 @@
 
         #nextm {
           float: right;
+        }
+
+        #back {
+          position: absolute;
+          top: 90%;
+          left: calc(50% - var(--button-width));
+        }
+
+        .comic-button {
+          display: none;
         }
         
     }
