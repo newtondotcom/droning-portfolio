@@ -26,12 +26,14 @@ export async function load() {
       duration: row.duration,
     }));
     
+    /*
     //check if the file exists
     let exists = await pkg.pathExists('./db.json');
     if (!exists) {
       await pkg.createFile('./db.json');
       return;
     }
+    */
     await writeJson('./db.json', projectData, { spaces: 2 });
 
   } catch (err) {
