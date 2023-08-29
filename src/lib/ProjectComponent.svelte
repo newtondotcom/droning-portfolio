@@ -31,6 +31,11 @@
     }
   }
 
+  function toggleMute() {
+  player.muted = !player.muted;
+  } 
+
+
   function onPause(event: CustomEvent) {
     isPlaying = false;
   }
@@ -57,6 +62,15 @@
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = Math.floor(seconds % 60);
     return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+  }
+
+  function seekTo(event: MouseEvent) {
+    const progressBar = event.currentTarget as HTMLElement;
+    const progressBarRect = progressBar.getBoundingClientRect();
+    const clickX = event.clientX - progressBarRect.left;
+    const clickPercentage = clickX / progressBarRect.width;
+    const newTime = duration * clickPercentage;
+    player.currentTime = newTime;
   }
   
   onMount(async () => {
@@ -116,37 +130,40 @@
       duration = event.detail;
     });
     player.removeEventListener('ready', onReady);
-    player.de
   });
 </script>
 
 
 <div class="video-container">
-  <media-player
-  title="{name}"
-  src="http://144.91.123.186/latranche/output.m3u8"
-  poster="https://media-files.vidstack.io/poster.png"
-  aspect-ratio="16/9"
-  crossorigin
-  >    
-    <media-outlet>
-        <media-poster alt="{description}">
-        </media-poster>
-    </media-outlet>
-    <media-community-skin></media-community-skin>
-  </media-player>
+  <div on:click={togglePlayPause}>
+    <media-player
+    title="{name}"
+    src="http://144.91.123.186/latranche/output.m3u8"
+    poster="https://media-files.vidstack.io/poster.png"
+    aspect-ratio="16/9"
+    crossorigin
+    >    
+      <media-outlet>
+          <media-poster alt="{description}">
+          </media-poster>
+      </media-outlet>
+    </media-player>
+  </div>
         <div class="controls-container" style ="opacity: {videoReady ? 1 : 0}; transition: opacity 0.{Constants.delayAnimation}s ease;">
-          <button id="btton" on:click={() => togglePlayPause()}>
+          <button  id="pause" class="btton" on:click={() => togglePlayPause()}>
             {isPlaying ? 'pause' : 'lancer'}
+          </button>
+          <button class="btton" id="mute" on:click={() => toggleMute()}>
+            {player && player.muted ? 'son' : 'sourdine'}
           </button>
           <div id="time" class="time-container">
             {formatDuration(currentTime)} {formatDuration(duration)}
           </div>
-          <div class="progress-bar">
+          <div class="progress-bar" on:click={seekTo}>
             <div class="progress" style={`width: ${(currentTime / duration) * 100}%`}></div>
           </div>
-          <button id="btton" class="fullscreen" on:click={()=>toggleFullScreen()}>
-            {isFullScreen ? 'le quitter' : 'plein écran'}
+          <button class="btton" id="fullscreen" on:click={()=>toggleFullScreen()}>
+            plein écran
           </button>
         </div>
         <div id="desc" style="opacity: {videoReady ? 1 : 0}; transition: opacity 0.{Constants.delayAnimation}s ease;">
@@ -170,7 +187,7 @@
     }
   
   
-    #btton {
+    .btton {
       background-color: black;
       color : white;
       font-family: 'VT323', monospace;
@@ -193,15 +210,17 @@
   
     #time {
       color : white;
+      font-size: 13px;
     }
   
     .controls-container {
-        width: 50vw;
+        width: 55vw;
         display: flex;
         align-items: center;
         justify-content: center;
         margin-top: 10px;
-      }
+        cursor: pointer;
+    }
   
       .time-container {
           margin: 0 20px;
@@ -215,10 +234,30 @@
       }
 
       media-player {
-        width: 50vw;
+        width: 55vw;
         height: calc(60vw/16*9);
         --vm-player-theme: #cc234d;
         z-index: 1000;
+      }
+
+      media-icon {
+        width: 32px;
+        height: 32px;
+        color: white;
+      }
+
+      #mute {
+        width: 70px;
+        margin-left: 5px;
+      }
+
+      #pause {
+        width: 70px;
+      }
+
+      #fullscreen {
+        width: 100px;
+        margin-left: 5px;
       }
 
     /* Avoid double controls on iOS when in fullscreen. */

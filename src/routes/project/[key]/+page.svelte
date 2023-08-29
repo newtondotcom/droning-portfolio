@@ -15,7 +15,10 @@
   index = parseInt(data.index, 10);
 
   function goBack() {
-    goto('/');
+    videoReady = false;
+    setTimeout(() => {
+      goto('/');
+    }, Constants.delay);
   }
 
   function goNext() {
@@ -49,6 +52,7 @@
 
   :root {
     --button-width: 150px;
+    font-family: Inconsolata, monospace;
   }
     
 
