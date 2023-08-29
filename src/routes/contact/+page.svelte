@@ -83,7 +83,7 @@
 
 <style>
   #container {
-    margin-top: -50px;
+    margin-top: 50px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -98,6 +98,7 @@
     color: white;
     z-index: 89;
   }
+
   .name {
     font-size: 2rem;
     font-family: Consolada, monospace;
@@ -179,10 +180,12 @@
   @media (max-width: 768px) {
     
       #container {
-        margin-top: 100px;
+        margin-top: 200px;
         height: 100vh;
         margin-bottom: 100px;
         overflow: hidden;
+        margin-left: 0px;
+        padding-left: 20px;
       }
 
       h1 {
@@ -196,14 +199,14 @@
       }
 
       #simple {
-        width: 200px;
+        width: 50vw;
         height: 30px;
         font-size: 1rem;
         margin-bottom: 20px;
       }
 
       #large {
-        width: 90vw;
+        width: 80vw;
         height: 30vw;
         font-size: 1.5rem;
         margin-bottom: 10px;

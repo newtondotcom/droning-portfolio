@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onDestroy, onMount } from 'svelte';
   import Constants from './constants';
   import 'vidstack/styles/defaults.css';
   import 'vidstack/styles/community-skin/video.css';
@@ -7,9 +7,7 @@
   import { defineCustomElements } from 'vidstack/elements';
   import FRENCH from '$lib/translations';
 
-  defineCustomElements();
-
-  export let videoReady = true;
+  export let videoReady = false;
   export let index: number;
   
   let isFullScreen = false;
@@ -20,6 +18,7 @@
   let duration = 0;
   let isPlaying = false;
   let description: string;
+  let thumbnail: string;
   let name: string;
   let videoId: string;
   let datas: any[] = [];
@@ -30,7 +29,6 @@
     } else {
       await player.play();
     }
-    isPlaying = !isPlaying;
   }
 
   function onPause(event: CustomEvent) {
@@ -62,10 +60,11 @@
   }
   
   onMount(async () => {
+    await defineCustomElements();
     datas = JSON.parse(await fetch('/db.json').then((r) => r.text()));
     videoId = datas[index].videoLink;
-    duration = parseInt(datas[index].duration, 10);
     description = datas[index].description;
+    thumbnail = datas[index].thumbnail;
     name = datas[index].name;
 
     const skin = document.querySelector('media-community-skin');
@@ -90,7 +89,34 @@
       player.addEventListener('ended', () => {
         player.playVideo();
       });
+      player.muted = true;
+      player.keyShortcuts = {
+        togglePaused: 'k Space',
+        toggleMuted: 'm',
+        toggleFullscreen: 'f',
+        togglePictureInPicture: 'i',
+        toggleCaptions: 'c',
+        seekBackward: 'ArrowLeft',
+        seekForward: 'ArrowRight',
+        volumeUp: 'ArrowUp',
+        volumeDown: 'ArrowDown',
+      };
     });
+  });
+
+  onDestroy(async () => {
+    if (!player) return;
+    player.removeEventListener('data-can-play', onReady);
+    player.removeEventListener('pause', onPause);
+    player.removeEventListener('play', onPlay);
+    player.removeEventListener('time-update', (event: CustomEvent) => {
+      currentTime = event.detail.currentTime;
+    });
+    player.removeEventListener('duration-change', (event: CustomEvent) => {
+      duration = event.detail;
+    });
+    player.removeEventListener('ready', onReady);
+    player.de
   });
 </script>
 
@@ -109,7 +135,6 @@
     </media-outlet>
     <media-community-skin></media-community-skin>
   </media-player>
-    <div id="loading" style="display: {videoReady ? 'none' : 'block'}; width:{width}px; height:{height}px;"></div>
         <div class="controls-container" style ="opacity: {videoReady ? 1 : 0}; transition: opacity 0.{Constants.delayAnimation}s ease;">
           <button id="btton" on:click={() => togglePlayPause()}>
             {isPlaying ? 'pause' : 'lancer'}
@@ -127,7 +152,7 @@
         <div id="desc" style="opacity: {videoReady ? 1 : 0}; transition: opacity 0.{Constants.delayAnimation}s ease;">
           <p>{description}</p>
         </div>
-  </div>
+</div>
 
 
   <style>
@@ -171,7 +196,7 @@
     }
   
     .controls-container {
-        width: 640px;
+        width: 50vw;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -209,30 +234,32 @@
     media-player[data-autoplay-error] .media-controls {
       opacity: 1;
     }
-        /* width <600px */
+
+    /* Show controls if user is hovering over the player. */
+        /* width <600px 
     media-player[data-bp-x='sm'] {
-    }
+    }*/
 
-    /* 600px ≤ width < 980 */
+    /* 600px ≤ width < 980 
     media-player[data-bp-x='md'] {
-    }
+    }*/
 
-    /* width ≥ 980 */
+    /* width ≥ 980 
     media-player[data-bp-x='lg'] {
     }
-
-    /* height <380px */
+*/
+    /* height <380px 
     media-player[data-bp-y='sm'] {
     }
-
-    /* 380px ≤ height < 600 */
+*/
+    /* 380px ≤ height < 600 
     media-player[data-bp-y='md'] {
     }
-
-    /* height ≥ 600 */
+*/
+    /* height ≥ 600 
     media-player[data-bp-y='lg'] {
     }
-
+*/
   
       @media (max-width: 768px) {
 
@@ -253,8 +280,7 @@
           }
   
           .controls-container {
-              margin-top: 10px;
-  
+            display: none;
           }
   
           .time-container {
@@ -264,12 +290,6 @@
           #btton{
             margin-right: 10px;
             font-size: 20px;
-          }
-
-          #back {
-            position: fixed;
-            top: 90%;
-            left: calc(50% - var(--button-width));
           }
           
           media-player {

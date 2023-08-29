@@ -3,6 +3,7 @@ import pkg from 'fs-extra';
 const { writeJson } = pkg;
 import Constants from '$lib/constants';
 import type { Project } from '$lib/types';
+import { assets } from '$app/paths';
 
 export async function load() {
   let connection;
@@ -34,14 +35,14 @@ export async function load() {
       return;
     }
     */
-    await writeJson('./db.json', projectData, { spaces: 2 });
+    await writeJson(assets+'db.json', projectData, { spaces: 2 });
 
   } catch (err) {
     console.error('Error fetching data:', err);
     const defaultData: Project[] = [
       // Your default data here
     ];
-    await writeJson('db.json', defaultData, { spaces: 2 });
+    await writeJson(assets+'db.json', defaultData, { spaces: 2 });
   } finally {
     if (connection) {
       connection.end();
