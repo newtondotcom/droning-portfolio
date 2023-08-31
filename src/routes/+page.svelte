@@ -4,6 +4,8 @@
     import { goto } from '$app/navigation';
     import Constants from '$lib/constants';
     import Footer from '$lib/Footer.svelte';
+    import { assets } from '$app/paths';
+    import db from '$lib/db';
 
     let displayFooter = false;
     let datas : any[] = [];
@@ -11,12 +13,12 @@
     function handleClick(project: Project) {
       displayFooter = false;
       setTimeout(() => {
-        goto(`/project/${project.key}/`);
+        goto(`/project?key=${project.key}/`);
       }, Constants.delay);
     }
 
     onMount(async () => {
-      datas = JSON.parse(await fetch('/db.json').then((r) => r.text()));
+      datas = db;
       displayFooter = true;
     });
 

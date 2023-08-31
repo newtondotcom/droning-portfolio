@@ -3,16 +3,13 @@
   import { goto } from '$app/navigation';
   import Constants from '$lib/constants';
   import ProjectComponent from '$lib/ProjectComponent.svelte';
+  import db from '$lib/db';
 
   let videoReady = true;
   let length: number;
   let datas: any[] = [];
   let index: number;
   let nextIndex: number;
-
-  export let data;
-
-  index = parseInt(data.index, 10);
 
   function goBack() {
     videoReady = false;
@@ -31,7 +28,12 @@
   }
 
   onMount(async () => {
-    datas = JSON.parse(await fetch('/db.json').then((r) => r.text()));
+    const urlParams = new URLSearchParams(window.location.search);
+    const keyParam = urlParams.get('key');
+    if (keyParam !== null) {
+      index = parseInt(keyParam);
+    }    
+    datas = db;
     length = datas.length;
     nextIndex = (index + 1) % length;
   });

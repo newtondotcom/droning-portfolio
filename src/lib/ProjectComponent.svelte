@@ -6,6 +6,7 @@
   import 'vidstack/icons';
   import { defineCustomElements } from 'vidstack/elements';
   import FRENCH from '$lib/translations';
+  import db from './db';
 
   export let videoReady = false;
   export let index: number;
@@ -75,7 +76,7 @@
   
   onMount(async () => {
     await defineCustomElements();
-    datas = JSON.parse(await fetch('/db.json').then((r) => r.text()));
+    datas = db;
     videoId = datas[index].videoLink;
     description = datas[index].description;
     thumbnail = datas[index].thumbnail;
@@ -135,6 +136,8 @@
 
 
 <div class="video-container">
+  <!-- svelte-ignore a11y-click-events-have-key-events -->
+  <!-- svelte-ignore a11y-no-static-element-interactions -->
   <div on:click={togglePlayPause}>
     <media-player
     title="{name}"
@@ -149,6 +152,7 @@
       </media-outlet>
     </media-player>
   </div>
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
         <div class="controls-container" style ="opacity: {videoReady ? 1 : 0}; transition: opacity 0.{Constants.delayAnimation}s ease;">
           <button  id="pause" class="btton" on:click={() => togglePlayPause()}>
             {isPlaying ? 'pause' : 'lancer'}
@@ -159,6 +163,8 @@
           <div id="time" class="time-container">
             {formatDuration(currentTime)} {formatDuration(duration)}
           </div>
+          <!-- svelte-ignore a11y-click-events-have-key-events -->
+          <!-- svelte-ignore a11y-no-static-element-interactions -->
           <div class="progress-bar" on:click={seekTo}>
             <div class="progress" style={`width: ${(currentTime / duration) * 100}%`}></div>
           </div>
@@ -332,10 +338,6 @@
             height: calc(60vw/16*9);
             --vm-player-theme: #cc234d;
             z-index: 1000;
-          }
-
-          .fullscreen {
-            display: none;
           }
 
       }
