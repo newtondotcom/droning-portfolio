@@ -2,7 +2,6 @@
   import { onDestroy, onMount } from 'svelte';
   import Constants from './constants';
   import 'vidstack/styles/defaults.css';
-  import 'vidstack/styles/community-skin/video.css';
   import 'vidstack/icons';
   import { defineCustomElements } from 'vidstack/elements';
   import FRENCH from '$lib/translations';
@@ -21,8 +20,9 @@
   let description: string;
   let thumbnail: string;
   let name: string;
-  let videoId: string;
+  let videoLink: string;
   let datas: any[] = [];
+  let dataloaded = false;
 
   async function togglePlayPause(event?: Event) {
     if (isPlaying) {
@@ -77,10 +77,12 @@
   onMount(async () => {
     await defineCustomElements();
     datas = db;
-    videoId = datas[index].videoLink;
     description = datas[index].description;
     thumbnail = datas[index].thumbnail;
     name = datas[index].name;
+    videoLink = datas[index].videoLink;
+    dataloaded = true;
+    
 
     const skin = document.querySelector('media-community-skin');
     if (skin) {
@@ -138,17 +140,15 @@
 <div class="video-container">
   <!-- svelte-ignore a11y-click-events-have-key-events -->
   <!-- svelte-ignore a11y-no-static-element-interactions -->
-  <div on:click={togglePlayPause}>
+  <div on:click={togglePlayPause} class="video" style="display:{dataloaded ? 'block': 'none'}">
     <media-player
     title="{name}"
-    src="http://144.91.123.186/latranche/output.m3u8"
-    poster="https://media-files.vidstack.io/poster.png"
+    src="{videoLink}"
+    poster="{thumbnail}"
     aspect-ratio="16/9"
     crossorigin
     >    
       <media-outlet>
-          <media-poster alt="{description}">
-          </media-poster>
       </media-outlet>
     </media-player>
   </div>
@@ -246,12 +246,6 @@
         z-index: 1000;
       }
 
-      media-icon {
-        width: 32px;
-        height: 32px;
-        color: white;
-      }
-
       #mute {
         width: 70px;
         margin-left: 5px;
@@ -265,53 +259,13 @@
         width: 100px;
         margin-left: 5px;
       }
-
-    /* Avoid double controls on iOS when in fullscreen. */
-    media-player[data-ios-controls] .media-controls,
-    /* Hide controls while media is loading, or user is idle. */
-    media-player:not([data-can-play]) .media-controls,
-    media-player[data-user-idle] .media-controls {
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    /* Show controls if autoplay fails. */
-    media-player[data-autoplay-error] .media-controls {
-      opacity: 1;
-    }
-
-    /* Show controls if user is hovering over the player. */
-        /* width <600px 
-    media-player[data-bp-x='sm'] {
-    }*/
-
-    /* 600px ≤ width < 980 
-    media-player[data-bp-x='md'] {
-    }*/
-
-    /* width ≥ 980 
-    media-player[data-bp-x='lg'] {
-    }
-*/
-    /* height <380px 
-    media-player[data-bp-y='sm'] {
-    }
-*/
-    /* 380px ≤ height < 600 
-    media-player[data-bp-y='md'] {
-    }
-*/
-    /* height ≥ 600 
-    media-player[data-bp-y='lg'] {
-    }
-*/
-  
+      
       @media (max-width: 768px) {
 
           .video-container {
               margin-top: 10vh;
               margin-bottom: 50px;
-              margin-left: 50vw;
+              transform: translate(45%, 0);
               height: 90vh; 
               width: 90vw;
               display: flex;
@@ -328,16 +282,32 @@
             font-size: 20px;
           }
   
-          #btton{
+          .btton{
             margin-right: 10px;
             font-size: 20px;
           }
           
           media-player {
-            width: 60vw;
-            height: calc(60vw/16*9);
+            width: 65vw;
+            height: calc(65vw/16*9);
             --vm-player-theme: #cc234d;
             z-index: 1000;
+          }
+
+          #mute {
+            display: none;
+          }
+
+          #fullscreen {
+            display: none;
+          }
+
+          .video {
+            margin-bottom: 10px;
+          }
+
+          #desc {
+            margin-top: 20px;
           }
 
       }

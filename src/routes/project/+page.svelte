@@ -18,12 +18,19 @@
     }, Constants.delay);
   }
 
-  function goNext() {
-    index = (index + 1) % length;
-    nextIndex = (index + 1) % length; // Update nextIndex here
+  function goPrevious() {
+    nextIndex = (index - 1) % length;
     videoReady = false;
     setTimeout(() => {
-      goto(`/project/${nextIndex}`);
+      goto(`/project?key=${nextIndex}`);
+    }, Constants.delay);
+  }
+
+  function goNext() {
+    nextIndex = (index + 1) % length;
+    videoReady = false;
+    setTimeout(() => {
+      goto(`/project?key=${nextIndex}`);
     }, Constants.delay);
   }
 
@@ -35,7 +42,6 @@
     }    
     datas = db;
     length = datas.length;
-    nextIndex = (index + 1) % length;
   });
 </script>
 
@@ -44,9 +50,10 @@
 <button id="back" on:click={goBack} class="comic-button desktop">go back</button>
 <button id="next" on:click={goNext} class="comic-button desktop">next</button>
 
-<div style="opacity: {videoReady ? 1 : 0}; transition: opacity 0.{Constants.delayAnimation}s ease;">
-  <button id="back" class="comic-button mobile" on:click={goBack}>go back</button>
-  <button id="next" class="comic-button mobile" on:click={goNext}>next</button>
+<div class="bottom-bar" style="opacity: {videoReady ? 1 : 0}; transition: opacity 0.{Constants.delayAnimation}s ease;">
+  <button id="backm" class="mobile" on:click={goPrevious}>previous</button>
+  <button id="nextm" class="mobile" on:click={goNext}>next</button>
+  <button id="nextm" class="mobile" on:click={goBack}>close (x)</button>
 </div>
 
 
@@ -109,16 +116,29 @@
 
     @media (max-width: 768px) {
 
-        #back {
-          position: absolute;
-          top: 90%;
-          left: calc(50% - var(--button-width));
+        .bottom-bar {
+          position: fixed;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          height: 70px;
+          background-color: white;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 1000;
         }
 
-        #next {
-          position: absolute;
-          top: 90%;
-          left: calc(50%);
+        #backm {
+          background-color: white;
+          border: none;
+          z-index: 1001;
+        }
+
+        #nextm {
+          background-color: white;
+          border: none;
+          z-index: 1001;
         }
 
         .mobile {
@@ -127,6 +147,11 @@
 
         .desktop {
           display: none;
+        }
+
+        .comic-button {
+          width: 100px;
+          font-size: 16px;
         }
         
     }
