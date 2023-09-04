@@ -187,7 +187,7 @@
       }
 
       #container {
-        margin-top: 15vh;
+        margin-top: 25vh;
         height: 100vh;
         margin-bottom: 100px;
         overflow: hidden;
