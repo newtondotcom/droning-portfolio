@@ -176,7 +176,7 @@
   }
 
   .container {
-    margin-bottom: 300px;
+    margin-bottom: 100px;
   }
 } 
 
