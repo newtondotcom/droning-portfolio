@@ -24,6 +24,7 @@
     setTimeout(() => {
       goto(`/project?key=${nextIndex}`);
     }, Constants.delay);
+    index = nextIndex;
   }
 
   function goNext() {
@@ -32,6 +33,7 @@
     setTimeout(() => {
       goto(`/project?key=${nextIndex}`);
     }, Constants.delay);
+    index = nextIndex;
   }
 
   onMount(async () => {
@@ -48,12 +50,16 @@
 <ProjectComponent index={index} bind:videoReady />
 
 <button id="back" on:click={goBack} class="comic-button desktop">go back</button>
+  <!--
 <button id="next" on:click={goNext} class="comic-button desktop">next</button>
+  -->
 
 <div class="bottom-bar" style="opacity: {videoReady ? 1 : 0}; transition: opacity 0.{Constants.delayAnimation}s ease;">
+  <!--
   <button id="backm" class="mobile" on:click={goPrevious}>previous</button>
   <button id="nextm" class="mobile" on:click={goNext}>next</button>
-  <button id="nextm" class="mobile" on:click={goBack}>close (x)</button>
+  -->
+  <button id="backm" class="mobile" on:click={goBack}>close (x)</button>
 </div>
 
 
@@ -74,7 +80,7 @@
     #back {
         position: fixed;
         top: 90%;
-        left: calc(50% - var(--button-width));
+        left: calc(50% - var(--button-width)/2);
     }
 
     .comic-button {
@@ -136,6 +142,12 @@
         }
 
         #nextm {
+          background-color: white;
+          border: none;
+          z-index: 1001;
+        }
+
+        #backm {
           background-color: white;
           border: none;
           z-index: 1001;

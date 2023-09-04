@@ -1,5 +1,15 @@
+<script context="module">
+	export const load = async (args) => {
+		return {
+			props: {
+				open: false,
+			}
+		};
+	};
+</script>
+
 <script lang="ts">
-  import { onDestroy, onMount } from 'svelte';
+  import { onMount} from 'svelte';
   import Constants from './constants';
   import 'vidstack/styles/defaults.css';
   import 'vidstack/icons';
@@ -92,6 +102,12 @@
     player = document.querySelector('media-player');
 
     if (!player) return;
+    player.pause();
+    player.src = videoLink;
+    player.name = name;
+    player.poster = thumbnail;
+    player.loading = 'lazy';
+    console.log("properties set");
     player.onAttach(async () => {
       player.addEventListener('data-can-play', onReady);
       player.addEventListener('pause', onPause);
@@ -120,20 +136,6 @@
       };
     });
   });
-
-  onDestroy(async () => {
-    if (!player) return;
-    player.removeEventListener('data-can-play', onReady);
-    player.removeEventListener('pause', onPause);
-    player.removeEventListener('play', onPlay);
-    player.removeEventListener('time-update', (event: CustomEvent) => {
-      currentTime = event.detail.currentTime;
-    });
-    player.removeEventListener('duration-change', (event: CustomEvent) => {
-      duration = event.detail;
-    });
-    player.removeEventListener('ready', onReady);
-  });
 </script>
 
 
@@ -142,9 +144,6 @@
   <!-- svelte-ignore a11y-no-static-element-interactions -->
   <div on:click={togglePlayPause} class="video" style="display:{dataloaded ? 'block': 'none'}">
     <media-player
-    title="{name}"
-    src="{videoLink}"
-    poster="{thumbnail}"
     aspect-ratio="16/9"
     crossorigin
     >    
@@ -259,7 +258,7 @@
         width: 100px;
         margin-left: 5px;
       }
-      
+
       @media (max-width: 768px) {
 
           .video-container {
