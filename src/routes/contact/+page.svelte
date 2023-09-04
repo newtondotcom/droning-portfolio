@@ -183,6 +183,7 @@
         font-size: 2.5rem;
         margin-top: 100px;
         width: 60vw;
+        z-index: 89;
       }
 
       #container {
