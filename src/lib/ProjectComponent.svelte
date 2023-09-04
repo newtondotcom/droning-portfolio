@@ -262,7 +262,7 @@
       @media (max-width: 768px) {
 
           .video-container {
-              margin-top: 10vh;
+              margin-top: 20vh;
               margin-bottom: 50px;
               transform: translate(45%, 0);
               height: 90vh; 
@@ -307,6 +307,12 @@
 
           #desc {
             margin-top: 20px;
+          }
+
+          #pause {
+            width: 15vw;
+            padding: 0;
+            margin:0;
           }
 
       }

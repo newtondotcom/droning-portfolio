@@ -149,6 +149,7 @@
 
         #backm {
           background-color: white;
+          color : black;
           border: none;
           z-index: 1001;
         }
