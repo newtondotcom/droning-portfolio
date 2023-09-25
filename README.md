@@ -12,4 +12,6 @@ Install the few dependencies:
 `npm i`
 
 Run the project:
-`npm run install`
+`npm run dev` or `yarn dev`
+To build the project:
+`npm run build` or `yarn build`

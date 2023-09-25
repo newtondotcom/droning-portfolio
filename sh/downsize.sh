@@ -1,0 +1,1 @@
+ffmpeg -i .\minia.png -vf "scale=1152:648" .\minialow.png
