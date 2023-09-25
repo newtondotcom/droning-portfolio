@@ -4,11 +4,12 @@
     import { goto } from '$app/navigation';
     import Constants from '$lib/constants';
     import Footer from '$lib/Footer.svelte';
-    import { assets } from '$app/paths';
+    import Image from '$lib/image.svelte';
     import db from '$lib/db';
 
     let displayFooter = false;
     let datas : any[] = [];
+    let countReady = 0;
 
     function handleClick(project: Project) {
       displayFooter = false;
@@ -25,7 +26,7 @@
 </script>
 
   <div class="container" >
-      <div class="grid">
+      <div class="grid" style="opacity:{'opacity' ? '1' : '0'}">
         {#each datas as project}
           <!-- svelte-ignore a11y-click-events-have-key-events -->
           <!-- svelte-ignore a11y-no-static-element-interactions -->
@@ -33,7 +34,7 @@
             class="project-case" style="opacity: {displayFooter ? 1 : 0}; transition: opacity 0.{Constants.delayAnimation}s ease;"
             on:click={() => handleClick(project)}
           >
-            <img loading="lazy" src={project.thumbnail} alt={project.name} />
+            <Image src={project.thumbnail} alt={project.name} />
             <div class="overwrite">{project.name}</div>
           </div>
         {/each}
@@ -131,12 +132,6 @@
   opacity: 1;
 }
 
-.project-case img {
-  width: 30vw;
-  height: auto;
-  object-fit: cover;
-}
-
 .overwrite {
   color : white;
   font-family: Inconsolata, monospace;
@@ -167,12 +162,6 @@
     justify-content: center;
     margin-top: 80px;
     margin-bottom: 50px;
-  }
-
-  .project-case img {
-  width: 80vw;
-  height: auto;
-  object-fit: cover;
   }
 
   .container {
