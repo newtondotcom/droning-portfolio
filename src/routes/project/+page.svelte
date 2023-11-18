@@ -69,13 +69,6 @@
     --button-width: 150px;
     font-family: Inconsolata, monospace;
   }
-    
-
-    #next {
-        position: fixed;
-        top: 90%;
-        left: calc(50%);
-    }
 
     #back {
         position: fixed;
@@ -136,12 +129,6 @@
         }
 
         #backm {
-          background-color: white;
-          border: none;
-          z-index: 1001;
-        }
-
-        #nextm {
           background-color: white;
           border: none;
           z-index: 1001;

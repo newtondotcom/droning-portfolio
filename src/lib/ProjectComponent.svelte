@@ -157,7 +157,7 @@
             {isPlaying ? 'pause' : 'lancer'}
           </button>
           <button class="btton" id="mute" on:click={() => toggleMute()}>
-            {player && player.muted ? 'son' : 'sourdine'}
+            {player && typeof player.muted !== 'undefined' && player.muted ? 'sourdine' : 'son'}
           </button>
           <div id="time" class="time-container">
             {formatDuration(currentTime)} {formatDuration(duration)}
