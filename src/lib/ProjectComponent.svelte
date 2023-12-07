@@ -11,8 +11,13 @@
 <script lang="ts">
   import { onMount} from 'svelte';
   import Constants from './constants';
-  import 'vidstack/styles/defaults.css';
+
   import 'vidstack/icons';
+  import 'vidstack/player';
+  import 'vidstack/player/layouts';
+  import 'vidstack/player/ui';
+  import 'vidstack/player/styles/default/theme.css';
+  import 'vidstack/player/styles/default/layouts/video.css';
   import { defineCustomElements } from 'vidstack/elements';
   import FRENCH from '$lib/translations';
   import db from './db';
@@ -107,7 +112,6 @@
     player.name = name;
     player.poster = thumbnail;
     player.loading = 'lazy';
-    console.log("properties set");
     player.onAttach(async () => {
       player.addEventListener('data-can-play', onReady);
       player.addEventListener('pause', onPause);
