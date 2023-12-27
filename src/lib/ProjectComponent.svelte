@@ -14,14 +14,14 @@
   
   import { onMount} from 'svelte';
   import Constants from './constants';
-
+  import 'vidstack/styles/defaults.css';
   import 'vidstack/icons';
   import 'vidstack/player';
   import 'vidstack/player/layouts';
   import 'vidstack/player/ui';
   import 'vidstack/player/styles/default/theme.css';
   import 'vidstack/player/styles/default/layouts/video.css';
-
+  import { defineCustomElements } from 'vidstack/elements';
   import FRENCH from '$lib/translations';
   import db from './db';
 
@@ -137,8 +137,34 @@
     player.name = name;
     player.poster = thumbnail;
     player.loading = 'lazy';
-    player.addEventListener('data-can-play', onReady);
-    console.log('player', player);
+    console.log("properties set");
+    player.onAttach(async () => {
+      player.addEventListener('data-can-play', onReady);
+      player.addEventListener('pause', onPause);
+      player.addEventListener('play', onPlay);
+      player.addEventListener('time-update', (event: CustomEvent) => {
+        currentTime = event.detail.currentTime;
+      });
+      player.addEventListener('duration-change', (event: CustomEvent) => {
+        duration = event.detail;
+      });
+      player.addEventListener('ready', onReady);
+      player.addEventListener('ended', () => {
+        player.playVideo();
+      });
+      player.muted = true;
+      player.keyShortcuts = {
+        togglePaused: 'k Space',
+        toggleMuted: 'm',
+        toggleFullscreen: 'f',
+        togglePictureInPicture: 'i',
+        toggleCaptions: 'c',
+        seekBackward: 'ArrowLeft',
+        seekForward: 'ArrowRight',
+        volumeUp: 'ArrowUp',
+        volumeDown: 'ArrowDown',
+      };
+    });
   });
 </script>
 
