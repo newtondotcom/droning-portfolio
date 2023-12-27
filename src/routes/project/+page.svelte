@@ -54,12 +54,12 @@
 <button id="next" on:click={goNext} class="comic-button desktop">next</button>
   -->
 
-<div class="bottom-bar"  on:click={goBack} style="opacity: {videoReady ? 1 : 0}; transition: opacity 0.{Constants.delayAnimation}s ease;">
+<div class="bottom-bar" style="opacity: {videoReady ? 1 : 0}; transition: opacity 0.{Constants.delayAnimation}s ease;">
   <!--
   <button id="backm" class="mobile" on:click={goPrevious}>previous</button>
   <button id="nextm" class="mobile" on:click={goNext}>next</button>
   -->
-  <button id="backm" class="mobile">close (x)</button>
+  <button id="backm" class="mobile" on:click={goBack}>close (x)</button>
 </div>
 
 
