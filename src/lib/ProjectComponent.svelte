@@ -9,6 +9,9 @@
 </script>
 
 <script lang="ts">
+  export let videoReady = false;
+  export let index: number = 0;
+  
   import { onMount} from 'svelte';
   import Constants from './constants';
 
@@ -18,12 +21,10 @@
   import 'vidstack/player/ui';
   import 'vidstack/player/styles/default/theme.css';
   import 'vidstack/player/styles/default/layouts/video.css';
-  import { defineCustomElements } from 'vidstack/elements';
+
   import FRENCH from '$lib/translations';
   import db from './db';
 
-  export let videoReady = false;
-  export let index: number;
   
   let isFullScreen = false;
   let player: any; 
@@ -36,7 +37,6 @@
   let thumbnail: string;
   let name: string;
   let videoLink: string;
-  let datas: any[] = [];
   let dataloaded = false;
 
   async function togglePlayPause(event?: Event) {
@@ -61,8 +61,32 @@
   }
 
   async function onReady(event: CustomEvent) {
-    console.log('ready');
+    console.log('player ready');
     videoReady = true;
+      player.addEventListener('pause', onPause);
+      player.addEventListener('play', onPlay);
+      player.addEventListener('time-update', (event: CustomEvent) => {
+        currentTime = event.detail.currentTime;
+      });
+      player.addEventListener('duration-change', (event: CustomEvent) => {
+        duration = event.detail;
+      });
+      player.addEventListener('ready', onReady);
+      player.addEventListener('ended', () => {
+        player.playVideo();
+      });
+      player.muted = true;
+      player.keyShortcuts = {
+        togglePaused: 'k Space',
+        toggleMuted: 'm',
+        toggleFullscreen: 'f',
+        togglePictureInPicture: 'i',
+        toggleCaptions: 'c',
+        seekBackward: 'ArrowLeft',
+        seekForward: 'ArrowRight',
+        volumeUp: 'ArrowUp',
+        volumeDown: 'ArrowDown',
+      };
   }
 
   async function toggleFullScreen() {
@@ -90,12 +114,12 @@
   }
   
   onMount(async () => {
-    await defineCustomElements();
-    datas = db;
-    description = datas[index].description;
-    thumbnail = datas[index].thumbnail;
-    name = datas[index].name;
-    videoLink = datas[index].videoLink;
+    console.log('index', index);
+    console.log(db[index]);
+    description = db[index].description;
+    thumbnail = db[index].thumbnail;
+    name = db[index].name;
+    videoLink = db[index].videoLink;
     dataloaded = true;
     
 
@@ -107,38 +131,14 @@
     player = document.querySelector('media-player');
 
     if (!player) return;
+    console.log('player', player);
     player.pause();
     player.src = videoLink;
     player.name = name;
     player.poster = thumbnail;
     player.loading = 'lazy';
-    player.onAttach(async () => {
-      player.addEventListener('data-can-play', onReady);
-      player.addEventListener('pause', onPause);
-      player.addEventListener('play', onPlay);
-      player.addEventListener('time-update', (event: CustomEvent) => {
-        currentTime = event.detail.currentTime;
-      });
-      player.addEventListener('duration-change', (event: CustomEvent) => {
-        duration = event.detail;
-      });
-      player.addEventListener('ready', onReady);
-      player.addEventListener('ended', () => {
-        player.playVideo();
-      });
-      player.muted = true;
-      player.keyShortcuts = {
-        togglePaused: 'k Space',
-        toggleMuted: 'm',
-        toggleFullscreen: 'f',
-        togglePictureInPicture: 'i',
-        toggleCaptions: 'c',
-        seekBackward: 'ArrowLeft',
-        seekForward: 'ArrowRight',
-        volumeUp: 'ArrowUp',
-        volumeDown: 'ArrowDown',
-      };
-    });
+    player.addEventListener('data-can-play', onReady);
+    console.log('player', player);
   });
 </script>
 
@@ -148,7 +148,6 @@
   <!-- svelte-ignore a11y-no-static-element-interactions -->
   <div on:click={togglePlayPause} class="video" style="display:{dataloaded ? 'block': 'none'}">
     <media-player
-    aspect-ratio="16/9"
     crossorigin
     >    
       <media-outlet>

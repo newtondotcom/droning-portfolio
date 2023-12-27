@@ -1,7 +1,7 @@
 name: Build and Push Docker Images
 
 env:
-  DOCKER_TAG : newtondotcom/portfolio:latest
+  DOCKER_TAG : newtondotcom/portfolio-merde:latest
 
 on:
   workflow_dispatch:
